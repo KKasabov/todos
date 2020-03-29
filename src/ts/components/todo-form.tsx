@@ -32,7 +32,7 @@ const TodoForm: FC<TodoFormProps> = ({ isEdit, id, name, description, onAddTodo,
     return (
         <form className="site-form" name="todo-form" onSubmit={handleSubmit(onSubmit)} ref={todoFormRef}>
             <div className="site-form__element">
-                {isEdit ? null : <label htmlFor="name">Name</label>}
+                {isEdit ? null : <label htmlFor="name">Title</label>}
                 <input id="name" name="name" type="text" autoComplete="off" ref={register({ required: true })} defaultValue={name || undefined} autoFocus={true} />
                 {errors.name && <span id="name-error" className="site-form__error">Required field</span>}
             </div>
