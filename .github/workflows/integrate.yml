@@ -5,7 +5,7 @@ on:
         branches: [ master ]
 
 jobs:
-    test_pull_request:
+    test_on_push:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v2
