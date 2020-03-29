@@ -1,0 +1,37 @@
+.todo-item {
+    display: grid;
+    grid-template-areas:
+        "name name"
+        "description description"
+        "controls date";
+    grid-template-columns: 200px auto;
+    margin-bottom: 1em;
+    border: 1px solid;
+
+    &__name {
+        grid-area: name;
+        margin: 0;
+        font-weight: normal;
+    }
+
+    &__description {
+        margin: 0;
+        grid-area: description;
+        font-weight: normal;
+    }
+
+    &__date {
+        grid-area: date;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        margin: 0;
+    }
+
+    &__controls {
+        grid-area: controls;
+        display: flex;
+        justify-content: space-evenly;
+        // margin: 0 0 0 auto;
+    }
+}
