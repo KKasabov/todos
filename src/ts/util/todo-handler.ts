@@ -46,4 +46,4 @@ export const editTodo: (todos: Todo[], id: number, name: string, description: st
  * @param todoId The id for the todo to be deleted
  */
 export const deleteTodo: (todos: Todo[], todoId: number) => Todo[]
-    = (todos, todoId) => todos.filter(todo => todo.id !== todoid);
+    = (todos, todoId) => todos.filter(todo => todo.id !== todoId);
