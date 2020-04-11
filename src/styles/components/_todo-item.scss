@@ -8,6 +8,12 @@
     margin-bottom: 1em;
     border: 1px solid;
 
+    &--complete {
+        & > *:not(time) {
+            text-decoration: line-through;
+        }
+    }
+
     &__name {
         grid-area: name;
         margin: 0;
@@ -28,10 +34,16 @@
         margin: 0;
     }
 
-    &__controls {
-        grid-area: controls;
-        display: flex;
-        justify-content: space-evenly;
+    &__control {
+        &-list {
+            grid-area: controls;
+            display: flex;
+            justify-content: space-evenly;
+        }
+
+        &-item {
+            font-size: 1.5em;
+        }
         // margin: 0 0 0 auto;
     }
 }
