@@ -2,7 +2,7 @@ import { ADD_TODO, EDIT_TODO, DELETE_TODO, TOGGLE_TODO_COMPLETE, TodoActionType,
 
 export const addTodo: AddTodo = (name, description): TodoActionType => ({
     type: ADD_TODO,
-    payload: { name, description, rr }
+    payload: { name, description }
 });
 
 export const editTodo: EditTodo = (id, name, description): TodoActionType => ({
