@@ -1,37 +1,43 @@
-import React, { FC, useState, Fragment } from 'react';
+import React, { FC, Fragment } from 'react';
 import { hot } from 'react-hot-loader/root';
 import TodoList from './components/todo-list';
 import TodoForm from './components/todo-form';
-import { Todo, AddTodo, RemoveTodo, EditTodo } from './constants/types';
-import { addTodo, editTodo, deleteTodo } from './util/todo-handler';
-import { generateRandomId } from './util/id-randomiser';
+import { TodosState, AddTodo, EditTodo, DeleteTodo, Todo } from './store/types';
+import * as todoActions from './store/actions'
 import '../styles/style.scss';
+import { connect, ConnectedProps } from 'react-redux';
+import { bindActionCreators, Dispatch } from 'redux';
 
-const App: FC = () => {
-    const [todos, setTodos] = useState<Todo[]>([]);
+const mapStateToProps = (state: TodosState) => ({
+    todos: state.todos
+});
+
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+    actions: bindActionCreators(todoActions, dispatch)
+});
+
+const connector = connect(mapStateToProps, mapDispatchToProps);
+
+type AppProps = ConnectedProps<typeof connector>;
+
+const App: FC<AppProps> = ({ todos, actions: { addTodo, editTodo, deleteTodo } }) => {
     const handleTodoAdded: AddTodo = (name, description) => {
-        const newTodo = {
-            id: generateRandomId(),
-            name,
-            description,
-            created_at: new Date()
-        };
-
-        setTodos(prevTodos => addTodo(prevTodos, newTodo));
+        addTodo(name, description);
     };
 
-    const handleTodoRemoved: RemoveTodo = (id) => {
-        setTodos(prevTodos => deleteTodo(prevTodos, id))
+    const handleTodoEdited: EditTodo = (id, name, description) => {
+        editTodo(id, name, description);
     }
 
-    const handleTodoEdited: EditTodo = (id, name, description) => {
-        setTodos(prevTodos => editTodo(prevTodos, id, name, description));
+    const handleTodoDeleted: DeleteTodo = (id) => {
+        deleteTodo(id);
     }
 
     return <Fragment>
         <TodoForm onAddTodo={handleTodoAdded} />
-        <TodoList items={todos} onRemoveTodo={handleTodoRemoved} onEditTodo={handleTodoEdited} />
+        <TodoList todos={todos} onDeleteTodo={handleTodoDeleted} onEditTodo={handleTodoEdited} />
     </Fragment>;
 }
 
-export default hot(App);
+
+export default connector(hot(App));
