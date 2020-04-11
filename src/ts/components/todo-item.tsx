@@ -1,16 +1,16 @@
 import React, { FC, Fragment, useState, useEffect } from 'react';
-import { Todo, RemoveTodo, EditTodo } from '../constants/types';
+import { Todo, EditTodo, DeleteTodo } from '../store/types';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 import TodoForm from './todo-form';
 import { formatDate } from '../util/date-formatter';
 
 interface TodoItemPros {
     todo: Todo,
-    onRemove: RemoveTodo,
-    onEdit: EditTodo
+    onEdit: EditTodo,
+    onDelete: DeleteTodo
 }
 
-const TodoItem: FC<TodoItemPros> = ({ todo, onRemove, onEdit }) => {
+const TodoItem: FC<TodoItemPros> = ({ todo, onDelete, onEdit }) => {
     const [isBeingEdited, setIsBeingEdited] = useState<boolean>(false);
     const { id, name, description, created_at } = todo;
     const isoDate = created_at.toISOString(),
@@ -26,7 +26,7 @@ const TodoItem: FC<TodoItemPros> = ({ todo, onRemove, onEdit }) => {
                     <FiEdit size="1.5em" className="todo-item__edit" onClick={() => setIsBeingEdited(true)} />
                 </div>
                 <div className="todo-item__controls-delete">
-                    <FiTrash2 size="1.5em" className="todo-item__delete" onClick={() => onRemove(id)} />
+                    <FiTrash2 size="1.5em" className="todo-item__delete" onClick={() => onDelete(id)} />
                 </div>
             </div>
         </li>;
