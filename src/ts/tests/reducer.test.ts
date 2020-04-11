@@ -1,5 +1,5 @@
 import reducer, { initialState } from '../store/reducer';
-import { ADD_TODO, EDIT_TODO, DELETE_TODO } from '../store/types';
+import { TodosState, ADD_TODO, EDIT_TODO, DELETE_TODO } from '../store/types';
 import 'jest-extended';
 
 describe('testing reducer functionality', () => {
@@ -18,10 +18,10 @@ describe('testing reducer functionality', () => {
     })
 
     it('should edit an existing todo', () => {
-        const defaultState = {
+        const defaultState: TodosState = {
             todos: [
-                { id: '0', name: 'First todo', description: 'First todo description', created_at: new Date() },
-                { id: '1', name: 'Second todo', description: 'Second todo description', created_at: new Date() }
+                { id: '0', name: 'First todo', description: 'First todo description', created_at: new Date(), is_complete: false },
+                { id: '1', name: 'Second todo', description: 'Second todo description', created_at: new Date(), is_complete: false }
             ]
         };
 
@@ -40,10 +40,10 @@ describe('testing reducer functionality', () => {
     })
 
     it('should delete a todo', () => {
-        const defaultState = {
+        const defaultState: TodosState = {
             todos: [
-                { id: '0', name: 'First todo', description: 'First todo description', created_at: new Date() },
-                { id: '1', name: 'Second todo', description: 'Second todo description', created_at: new Date() }
+                { id: '0', name: 'First todo', description: 'First todo description', created_at: new Date(), is_complete: false },
+                { id: '1', name: 'Second todo', description: 'Second todo description', created_at: new Date(), is_complete: false }
             ]
         };
 
