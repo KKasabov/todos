@@ -4,13 +4,15 @@ import { addTodo, editTodo, toggleTodoComplete, deleteTodo } from '../store/acti
 describe('testing redux actions creator', () => {
     it('should create an action to add a todo', () => {
         const name: string = 'Todo name',
-            description: string = 'Todo description';
+            description: string = 'Todo description',
+            created_at: Date = new Date('2020-04-23T21:32:48.871Z'),
+            id: string = '123456';
 
         const expectedAction = {
             type: ADD_TODO,
-            payload: { name, description }
+            payload: { name, description, id, created_at }
         }
-        expect(addTodo(name, description)).toEqual(expectedAction)
+        expect(addTodo(name, description, id, created_at)).toEqual(expectedAction)
     })
     it('should create an action to edit a todo', () => {
         const id: string = '0',
