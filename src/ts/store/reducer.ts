@@ -15,12 +15,7 @@ import {
 } from './types';
 
 export const initialState: AppState = {
-    todos: [
-        { id: '0', name: 'Default name', description: 'Default description', created_at: new Date('2020-04-14T18:06:05.550Z'), is_complete: false },
-        { id: '1', name: 'Some 1', description: 'Some description 1', created_at: new Date('2020-04-14T18:10:10.550Z'), is_complete: false },
-        { id: '2', name: 'Thing 2', description: 'Thing description 2', created_at: new Date('2020-04-14T18:15:05.550Z'), is_complete: false },
-        { id: '3', name: 'Else 3', description: 'Else description 3', created_at: new Date('2020-04-14T18:05:25.550Z'), is_complete: false },
-    ],
+    todos: [],
     isRecording: false,
     isPlaying: false,
     currentRecording: {},
