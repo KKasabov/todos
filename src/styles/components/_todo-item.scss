@@ -1,17 +1,14 @@
 .todo-item {
     display: grid;
     grid-template-areas:
-        "name name"
-        "description description"
-        "controls date";
-    grid-template-columns: 200px auto;
+        "name date controls"
+        "description date controls";
+    grid-template-columns: repeat(3, auto);
     margin-bottom: 1em;
     border: 1px solid;
 
     &--complete {
-        & > *:not(time) {
-            text-decoration: line-through;
-        }
+        background-color: lightgray;
     }
 
     &__name {
@@ -28,15 +25,14 @@
 
     &__date {
         grid-area: date;
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        margin: 0;
+        align-self: center;
+        justify-content: center;
     }
 
     &__control {
         &-list {
             grid-area: controls;
+            align-self: center;
             display: flex;
             justify-content: space-evenly;
         }

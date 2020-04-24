@@ -12,49 +12,24 @@ interface TodoItemPros {
 }
 
 const TodoItem: FC<TodoItemPros> = ({ todo, onDelete, onEdit, onToggleComplete }) => {
-    const [isBeingEdited, setIsBeingEdited] = useState<boolean>(false);
     const { id, name, description, created_at, is_complete } = todo;
     const isoDate = created_at.toISOString(),
         formattedDate = formatDate(created_at);
 
-    const defaultContent =
-        <li className={`todo-item${is_complete ? ' todo-item--complete' : ''}`} key={id} value={id}>
-            <h1 className="todo-item__name">{name}</h1>
-            <h2 className="todo-item__description">{description}</h2>
-            <time className="todo-item__date" dateTime={isoDate}>{formattedDate}</time>
-            <div className="todo-item__control-list">
-                <FiCheck className="todo-item__control-item" onClick={() => onToggleComplete(id)} />
-                <FiEdit className="todo-item__control-item" onClick={() => setIsBeingEdited(true)} />
-                <FiTrash2 className="todo-item__control-item" onClick={() => onDelete(id)} />
-            </div>
-        </li>;
-
-    const [content, setContent] = useState(defaultContent);
-
-    const setEditComplete: () => void = () => {
-        setIsBeingEdited(false);
-    }
-
-    useEffect(() => {
-        isBeingEdited
-            ? setContent(
-                <Fragment>
-                    <TodoForm
-                        isEdit={true}
-                        onEditTodo={onEdit}
-                        handleEditComplete={setEditComplete}
-                        id={id}
-                        name={name}
-                        description={description}
-                    />
-                    <time className="todo-item__date" dateTime={isoDate}>{formattedDate}</time>
-                </Fragment>
-            )
-            : setContent(defaultContent);
-
-    }, [isBeingEdited, todo]);
-
-    return content;
+    return <li className={`todo-item${is_complete ? ' todo-item--complete' : ''}`} key={id} value={id}>
+        <TodoForm
+            isItem={true}
+            onEditTodo={onEdit}
+            id={id}
+            name={name}
+            description={description}
+        />
+        <div className="todo-item__control-list">
+            <div className="todo-item__control-item js-todo-item-toggle-complete" onClick={() => onToggleComplete(id)}><FiCheck /></div>
+            <div className="todo-item__control-item  js-todo-item-delete" onClick={() => onDelete(id)}><FiTrash2 /></div>
+        </div>
+        <time className="todo-item__date" dateTime={isoDate}>{formattedDate}</time>
+    </li>;
 };
 
 export default TodoItem;

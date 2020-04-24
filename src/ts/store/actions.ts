@@ -1,8 +1,31 @@
-import { ADD_TODO, EDIT_TODO, DELETE_TODO, TOGGLE_TODO_COMPLETE, TodoActionType, AddTodo, EditTodo, DeleteTodo, ToggleTodoComplete } from './types';
+import {
+    ADD_TODO,
+    EDIT_TODO,
+    DELETE_TODO,
+    TOGGLE_TODO_COMPLETE,
+    START_RECORDING,
+    STOP_RECORDING,
+    PLAY_RECORDING,
+    TodoActionType,
+    RecordingActionType,
+    AddTodo,
+    EditTodo,
+    DeleteTodo,
+    ToggleTodoComplete,
+    SetIsRecording,
+    PlayRecording,
+    EXIT_RECORDING
+} from './types';
+import { v4 as uniqueID } from 'uuid';
 
-export const addTodo: AddTodo = (name, description): TodoActionType => ({
+export const addTodo: AddTodo = (name, description, id, timestamp): TodoActionType => ({
     type: ADD_TODO,
-    payload: { name, description }
+    payload: {
+        name,
+        description,
+        id: id || uniqueID(),
+        created_at: timestamp || new Date()
+    }
 });
 
 export const editTodo: EditTodo = (id, name, description): TodoActionType => ({
@@ -18,4 +41,21 @@ export const deleteTodo: DeleteTodo = (id): TodoActionType => ({
 export const toggleTodoComplete: ToggleTodoComplete = (id): TodoActionType => ({
     type: TOGGLE_TODO_COMPLETE,
     payload: { id }
-})
+});
+
+export const startRecording: SetIsRecording = (): RecordingActionType => ({
+    type: START_RECORDING
+});
+
+export const stopRecording: SetIsRecording = (): RecordingActionType => ({
+    type: STOP_RECORDING
+});
+
+export const playRecording: PlayRecording = (recording): RecordingActionType => ({
+    type: PLAY_RECORDING,
+    payload: recording
+});
+
+export const exitRecording: SetIsRecording = (): RecordingActionType => ({
+    type: EXIT_RECORDING
+});
