@@ -42,7 +42,9 @@ const App: FC<AppProps> = (
             startRecording,
             stopRecording,
             playRecording,
-            exitRecording
+            exitRecording,
+            deleteRecording,
+            deleteAllRecordings
         }
     }
 ) => {
@@ -196,8 +198,10 @@ const App: FC<AppProps> = (
             isRecording={isRecording}
             onPlay={playRec}
             onExit={exitRecording}
-            onStartRecodring={startRecording}
-            onStopRrecording={stopRecording}
+            onDelete={deleteRecording}
+            onDeleteAll={deleteAllRecordings}
+            onStartRecording={startRecording}
+            onStopRecording={stopRecording}
         />
         <br />
         <br />

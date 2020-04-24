@@ -11,7 +11,9 @@ import {
     STOP_RECORDING,
     RECORD_ACTION,
     PLAY_RECORDING,
-    EXIT_RECORDING
+    EXIT_RECORDING,
+    DELETE_RECORDING,
+    DELETE_ALL_RECORDINGS
 } from './types';
 import moment from 'moment';
 
@@ -124,6 +126,16 @@ const reducer = (state = initialState, action: AppActionType): AppState => {
                 isPlaying: false,
                 todos: [...state.cachedTodos],
                 cachedTodos: []
+            }
+        case DELETE_RECORDING:
+            return {
+                ...state,
+                recordings: [...state.recordings.filter(rec => rec.id !== action.payload.id)]
+            }
+        case DELETE_ALL_RECORDINGS:
+            return {
+                ...state,
+                recordings: []
             }
         default:
             return state;

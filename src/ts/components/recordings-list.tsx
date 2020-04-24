@@ -1,5 +1,5 @@
 import React, { FC, Fragment } from 'react'
-import { Recording, SetIsRecording, PlayRecording } from '../store/types'
+import { Recording, SetIsRecording, PlayRecording, DeleteRecording, DeleteAllRecordings } from '../store/types'
 import moment from 'moment';
 
 interface RecordingsListProps {
@@ -8,11 +8,13 @@ interface RecordingsListProps {
     isRecording: boolean,
     onPlay: PlayRecording,
     onExit: PlayRecording,
-    onStartRecodring: SetIsRecording,
-    onStopRrecording: SetIsRecording
+    onDelete: DeleteRecording,
+    onDeleteAll: DeleteAllRecordings,
+    onStartRecording: SetIsRecording,
+    onStopRecording: SetIsRecording
 }
 
-const RecordingsList: FC<RecordingsListProps> = ({ recordings, isRecording, isPlaying, onPlay, onExit, onStopRrecording, onStartRecodring }) => {
+const RecordingsList: FC<RecordingsListProps> = ({ recordings, isRecording, isPlaying, onPlay, onExit, onDelete, onDeleteAll, onStopRecording, onStartRecording }) => {
     return <Fragment>
         <ul>
             {recordings.map(rec => {
@@ -23,11 +25,13 @@ const RecordingsList: FC<RecordingsListProps> = ({ recordings, isRecording, isPl
                             ? <button onClick={() => onExit(rec)}>Exit</button>
                             : <button onClick={() => onPlay(rec)}>Play</button>
                         }
+                        <button onClick={() => onDelete(rec.id!)}>Delete</button>
                     </li>
                 );
             })}
+            <button onClick={() => onDeleteAll()}>Delete all</button>
         </ul>
-        <button onClick={() => isRecording ? onStopRrecording() : onStartRecodring()}>{isRecording ? 'Stop' : 'Start'} recording</button>
+        <button onClick={() => isRecording ? onStopRecording() : onStartRecording()}>{isRecording ? 'Stop' : 'Start'} recording</button>
     </Fragment>;
 
 }
