@@ -6,6 +6,9 @@ import {
     START_RECORDING,
     STOP_RECORDING,
     PLAY_RECORDING,
+    EXIT_RECORDING,
+    DELETE_RECORDING,
+    DELETE_ALL_RECORDINGS,
     TodoActionType,
     RecordingActionType,
     AddTodo,
@@ -14,7 +17,8 @@ import {
     ToggleTodoComplete,
     SetIsRecording,
     PlayRecording,
-    EXIT_RECORDING
+    DeleteRecording,
+    DeleteAllRecordings,
 } from './types';
 import { v4 as uniqueID } from 'uuid';
 import moment from 'moment';
@@ -59,4 +63,13 @@ export const playRecording: PlayRecording = (recording): RecordingActionType => 
 
 export const exitRecording: SetIsRecording = (): RecordingActionType => ({
     type: EXIT_RECORDING
+});
+
+export const deleteRecording: DeleteRecording = (id): RecordingActionType => ({
+    type: DELETE_RECORDING,
+    payload: { id }
+});
+
+export const deleteAllRecordings: DeleteAllRecordings = (): RecordingActionType => ({
+    type: DELETE_ALL_RECORDINGS
 });

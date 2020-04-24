@@ -9,6 +9,8 @@ export const STOP_RECORDING = 'STOP_RECORDING';
 export const RECORD_ACTION = 'RECORD_ACTION';
 export const PLAY_RECORDING = 'PLAY_RECORDING';
 export const EXIT_RECORDING = 'EXIT_RECORDING';
+export const DELETE_RECORDING = 'DELETE_RECORDING';
+export const DELETE_ALL_RECORDINGS = 'DELETE_ALL_RECORDINGS';
 
 export interface Todo {
     readonly id: string,
@@ -91,12 +93,23 @@ interface PlayRecordingAction {
     payload: Recording
 }
 
+interface DeleteRecordingAction {
+    type: typeof DELETE_RECORDING,
+    payload: { id: string }
+}
+
+interface DeleteAllRecordingsAction {
+    type: typeof DELETE_ALL_RECORDINGS
+}
+
 interface ExitRecordingAction {
     type: typeof EXIT_RECORDING
 }
 
 export type TodoActionType = AddTodoAction | EditTodoAction | DeleteTodoAction | ToggleTodoCompleteAction;
-export type RecordingActionType = StartRecordingAction | StopRecordingAction | AddToCurrentRecordingAction | PlayRecordingAction | ExitRecordingAction;
+export type RecordingActionType =
+    StartRecordingAction | StopRecordingAction | AddToCurrentRecordingAction | PlayRecordingAction |
+    ExitRecordingAction | DeleteRecordingAction | DeleteAllRecordingsAction;
 export type AppActionType = TodoActionType | RecordingActionType;
 
 // todo functions types
@@ -108,3 +121,5 @@ export type ToggleTodoComplete = (id: string) => void
 //recording function types
 export type SetIsRecording = () => void
 export type PlayRecording = (recording: Recording) => void
+export type DeleteRecording = (id: string) => void
+export type DeleteAllRecordings = () => void

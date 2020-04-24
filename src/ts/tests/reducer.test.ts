@@ -10,7 +10,9 @@ import {
     EXIT_RECORDING,
     PLAY_RECORDING,
     RECORD_ACTION,
-    TodoActionType
+    TodoActionType,
+    DELETE_RECORDING,
+    DELETE_ALL_RECORDINGS
 } from '../store/types';
 import 'jest-extended';
 import moment from 'moment';
@@ -37,7 +39,22 @@ describe('testing reducer functionality', () => {
                 },
             ]
         },
-        recordings: [],
+        recordings: [
+            {
+                id: '0',
+                created_at: moment('2020-04-13T11:32:48'),
+                actions: [],
+                initialTodos: [
+                    {
+                        id: '0222',
+                        name: 'initial todo inside recording',
+                        description: '',
+                        created_at: moment(),
+                        is_complete: false
+                    },
+                ]
+            }
+        ],
         cachedTodos: [],
     };
 
@@ -154,5 +171,23 @@ describe('testing reducer functionality', () => {
         });
 
         expect(result.isPlaying).toEqual(false);
+    })
+
+    it('should delete recording', () => {
+        const result = reducer(defaultState, {
+            type: DELETE_RECORDING,
+            payload: { id: '0' }
+        });
+        const recording = defaultState.recordings.find(rec => rec.id === '0');
+
+        expect(result.recordings).not.toContain(recording);
+    })
+
+    it('should delete all recordings', () => {
+        const result = reducer(defaultState, {
+            type: DELETE_ALL_RECORDINGS
+        });
+
+        expect(result.recordings).toBeEmpty();
     })
 })
