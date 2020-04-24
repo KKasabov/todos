@@ -9,12 +9,13 @@ import { connect, ConnectedProps } from 'react-redux';
 import { bindActionCreators, Dispatch, Action } from 'redux';
 import store from './store/'
 const mapStateToProps = (state: AppState) => {
-    const { todos, recordings, isRecording } = state;
+    const { todos, recordings, isRecording, isPlaying } = state;
 
     return {
         todos,
         recordings,
-        isRecording
+        isRecording,
+        isPlaying
     }
 };
 
@@ -25,7 +26,7 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type AppProps = ConnectedProps<typeof connector>;
-const App: FC<AppProps> = ({ todos, recordings, isRecording, actions: { addTodo, editTodo, deleteTodo, toggleTodoComplete, startRecording, stopRecording, playRecording, exitRecording } }) => {
+const App: FC<AppProps> = ({ todos, recordings, isRecording, isPlaying, actions: { addTodo, editTodo, deleteTodo, toggleTodoComplete, startRecording, stopRecording, playRecording, exitRecording } }) => {
     const addNewTodo: AddTodo = (name, description) => {
         const nameInput: HTMLInputElement = document.getElementById('name')! as HTMLInputElement;
         addTodo(name, description);
@@ -62,11 +63,8 @@ const App: FC<AppProps> = ({ todos, recordings, isRecording, actions: { addTodo,
     }
 
     const programmaticallyEditTodo = (id: string, name: string, description: string) => {
-        return new Promise<string>((resolve, reject) => {
+        return new Promise<string>(resolve => {
             const todoItem = document.querySelector(`li[value='${id}']`)!;
-            if (!todoItem) {
-                reject(`Todo with id ${id} was deleted prior to playing this action`);
-            }
             const form = todoItem.querySelector(`form`)!;
             const nameInput = form.querySelector('#name')! as HTMLInputElement;
             const descriptionInput = form.querySelector('#description')! as HTMLInputElement;
@@ -160,6 +158,7 @@ const App: FC<AppProps> = ({ todos, recordings, isRecording, actions: { addTodo,
     }
 
     const playActionChain = (actions: TodoActionType[]) => {
+        console.log('actions: ', actions);
         const nextAction = actions.shift();
         if (nextAction) {
             return playAction(nextAction).then(async _ => {
@@ -174,10 +173,7 @@ const App: FC<AppProps> = ({ todos, recordings, isRecording, actions: { addTodo,
     const play = async (recording: Recording) => {
         playRecording(recording);
         await timer(2000);
-        playActionChain(recording.actions!).then(async () => {
-            await timer(3000);
-            exit(recording);
-        });
+        playActionChain([...recording.actions!]);
     }
 
     const exit = (recording: Recording) => {
@@ -186,7 +182,14 @@ const App: FC<AppProps> = ({ todos, recordings, isRecording, actions: { addTodo,
 
     return <Fragment>
         <ul>
-            {recordings.map(rec => <li key={rec.id!}>{rec.created_at!.toLocaleString()}<button onClick={() => play(rec)}>Play</button><button onClick={() => exit(rec)}>Exit</button></li>)}
+            {recordings.map(rec => <li key={rec.id!}>
+                {rec.created_at!.toLocaleString()}
+                {isPlaying
+                    ? <button onClick={() => exit(rec)}>Exit</button>
+                    : <button onClick={() => play(rec)}>Play</button>
+                }
+            </li>)
+            }
         </ul>
         <button onClick={() => isRecording ? stopRecording() : startRecording()}>{isRecording ? 'Stop' : 'Start'} recording</button>
         <br />
@@ -197,6 +200,5 @@ const App: FC<AppProps> = ({ todos, recordings, isRecording, actions: { addTodo,
         <TodoList todos={todos} onDeleteTodo={deleteTodo} onEditTodo={editTodo} onToggleTodoComplete={toggleTodoComplete} />
     </Fragment>;
 }
-
 
 export default connector(hot(App));
