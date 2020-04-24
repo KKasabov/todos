@@ -106,5 +106,4 @@ export type ToggleTodoComplete = (id: string) => void
 
 //recording function types
 export type SetIsRecording = () => void
-export type RecordAction = (action: TodoActionType) => void
 export type PlayRecording = (recording: Recording) => void

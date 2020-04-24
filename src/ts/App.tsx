@@ -1,13 +1,14 @@
-import React, { FC, Fragment, MouseEvent } from 'react';
+import React, { FC, Fragment } from 'react';
 import { hot } from 'react-hot-loader/root';
 import TodoList from './components/todo-list';
 import TodoForm from './components/todo-form';
-import { TodosState, AddTodo, EditTodo, DeleteTodo, ToggleTodoComplete, AppState, Recording, TodoActionType, ADD_TODO, EDIT_TODO, DELETE_TODO, TOGGLE_TODO_COMPLETE } from './store/types';
+import RecordingsList from './components/recordings-list';
+import { AppState, Recording, TodoActionType, ADD_TODO, EDIT_TODO, DELETE_TODO, TOGGLE_TODO_COMPLETE } from './store/types';
 import * as todoActions from './store/actions'
-import '../styles/style.scss';
 import { connect, ConnectedProps } from 'react-redux';
-import { bindActionCreators, Dispatch, Action } from 'redux';
-import store from './store/'
+import { bindActionCreators, Dispatch } from 'redux';
+import '../styles/style.scss';
+
 const mapStateToProps = (state: AppState) => {
     const { todos, recordings, isRecording, isPlaying } = state;
 
@@ -26,18 +27,29 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
 const connector = connect(mapStateToProps, mapDispatchToProps);
 
 type AppProps = ConnectedProps<typeof connector>;
-const App: FC<AppProps> = ({ todos, recordings, isRecording, isPlaying, actions: { addTodo, editTodo, deleteTodo, toggleTodoComplete, startRecording, stopRecording, playRecording, exitRecording } }) => {
-    const addNewTodo: AddTodo = (name, description) => {
-        const nameInput: HTMLInputElement = document.getElementById('name')! as HTMLInputElement;
-        addTodo(name, description);
-        nameInput.focus();
+const App: FC<AppProps> = (
+    {
+        todos,
+        recordings,
+        isRecording,
+        isPlaying,
+        actions: {
+            addTodo,
+            editTodo,
+            deleteTodo,
+            toggleTodoComplete,
+            startRecording,
+            stopRecording,
+            playRecording,
+            exitRecording
+        }
     }
-
+) => {
     const programmaticallyAddTodo = (id: string, name: string, description: string, timestamp: Date) => {
-        const nameInput: HTMLInputElement = document.getElementById('name')! as HTMLInputElement;
-        const descriptionInput: HTMLInputElement = document.getElementById('description')! as HTMLInputElement;
-
         return new Promise<string>((resolve) => {
+            const nameInput: HTMLInputElement = document.getElementById('name')! as HTMLInputElement;
+            const descriptionInput: HTMLInputElement = document.getElementById('description')! as HTMLInputElement;
+
             if (nameInput.value !== name) {
                 typeText(nameInput, name).then(() => {
                     if (descriptionInput.value !== description) {
@@ -91,29 +103,30 @@ const App: FC<AppProps> = ({ todos, recordings, isRecording, isPlaying, actions:
     }
 
     const programaticallyToggleTodoComplete = (id: string) => {
-        const todoItem = document.querySelector(`li[value='${id}']`)!;
-        const toggle = todoItem.querySelector('.js-todo-item-toggle-complete')! as HTMLElement;
-
         return new Promise<string>((resolve) => {
+            const todoItem = document.querySelector(`li[value='${id}']`)!;
+            const toggle = todoItem.querySelector('.js-todo-item-toggle-complete')! as HTMLElement;
+
             toggle.click();
             resolve();
         });
     }
-    const programmaticallyDeleteTodo = (id: string) => {
-        const todoItem = document.querySelector(`li[value='${id}']`)!;
-        const deleteButton = todoItem.querySelector('.js-todo-item-delete')! as HTMLElement;
 
+    const programmaticallyDeleteTodo = (id: string) => {
         return new Promise<string>((resolve) => {
+            const todoItem = document.querySelector(`li[value='${id}']`)!;
+            const deleteButton = todoItem.querySelector('.js-todo-item-delete')! as HTMLElement;
+
             deleteButton.click();
             resolve();
         });
     }
 
     const typeText = (input: HTMLInputElement, text: string, speed = 75) => {
-        input.value = '';
-        let i = 0;
-
         return new Promise<string>((resolve) => {
+            input.value = '';
+            let i = 0;
+
             input.focus();
             const typeChar = () => {
                 if (i < text.length) {
@@ -153,12 +166,11 @@ const App: FC<AppProps> = ({ todos, recordings, isRecording, isPlaying, actions:
         }
     }
 
-    function timer(ms: number) {
+    const timer = (ms: number) => {
         return new Promise(res => setTimeout(res, ms));
     }
 
     const playActionChain = (actions: TodoActionType[]) => {
-        console.log('actions: ', actions);
         const nextAction = actions.shift();
         if (nextAction) {
             return playAction(nextAction).then(async _ => {
@@ -170,31 +182,25 @@ const App: FC<AppProps> = ({ todos, recordings, isRecording, isPlaying, actions:
         }
     }
 
-    const play = async (recording: Recording) => {
+    const playRec = async (recording: Recording) => {
         playRecording(recording);
         await timer(2000);
         playActionChain([...recording.actions!]);
     }
 
-    const exit = (recording: Recording) => {
-        exitRecording();
-    }
-
     return <Fragment>
-        <ul>
-            {recordings.map(rec => <li key={rec.id!}>
-                {rec.created_at!.toLocaleString()}
-                {isPlaying
-                    ? <button onClick={() => exit(rec)}>Exit</button>
-                    : <button onClick={() => play(rec)}>Play</button>
-                }
-            </li>)
-            }
-        </ul>
-        <button onClick={() => isRecording ? stopRecording() : startRecording()}>{isRecording ? 'Stop' : 'Start'} recording</button>
+        <RecordingsList
+            recordings={recordings}
+            isPlaying={isPlaying}
+            isRecording={isRecording}
+            onPlay={playRec}
+            onExit={exitRecording}
+            onStartRecodring={startRecording}
+            onStopRrecording={stopRecording}
+        />
         <br />
         <br />
-        <TodoForm onAddTodo={addNewTodo} />
+        <TodoForm onAddTodo={addTodo} />
         <br />
         <br />
         <TodoList todos={todos} onDeleteTodo={deleteTodo} onEditTodo={editTodo} onToggleTodoComplete={toggleTodoComplete} />

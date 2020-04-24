@@ -2,7 +2,7 @@ import { createStore, applyMiddleware, Middleware } from 'redux';
 import thunkMiddleware from 'redux-thunk'
 import { composeWithDevTools } from 'redux-devtools-extension';
 import reducer, { initialState } from './reducer';
-import { AppActionType, RECORD_ACTION, PLAY_RECORDING, TodoActionType } from './types';
+import { AppActionType, RECORD_ACTION } from './types';
 
 // middleware for recording redux actions
 const recordAction: Middleware = store => next => (action: AppActionType) => {
