@@ -46,7 +46,7 @@ const TodoForm: FC<TodoFormProps> = ({ isItem, id, name, description, onAddTodo,
                         required: true,
                         pattern: /^(?!\s*$).+/
                     })
-                } defaultValue={name} autoFocus={true} onBlur={isItem ? onSubmit : undefined} />
+                } defaultValue={name} autoFocus={!isItem} onBlur={isItem ? onSubmit : undefined} />
                 {errors.name && errors.name.type === 'required'
                     && <span id="name-error" className="site-form__error">Please enter a name</span>}
                 {errors.name && errors.name.type === 'pattern'
