@@ -8,6 +8,7 @@ import * as todoActions from './store/actions'
 import { connect, ConnectedProps } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import '../styles/style.scss';
+import { Moment } from 'moment';
 
 const mapStateToProps = (state: AppState) => {
     const { todos, recordings, isRecording, isPlaying } = state;
@@ -45,7 +46,7 @@ const App: FC<AppProps> = (
         }
     }
 ) => {
-    const programmaticallyAddTodo = (id: string, name: string, description: string, timestamp: Date) => {
+    const programmaticallyAddTodo = (id: string, name: string, description: string, timestamp: Moment) => {
         return new Promise<string>((resolve) => {
             const nameInput: HTMLInputElement = document.getElementById('name')! as HTMLInputElement;
             const descriptionInput: HTMLInputElement = document.getElementById('description')! as HTMLInputElement;
@@ -203,7 +204,13 @@ const App: FC<AppProps> = (
         <TodoForm onAddTodo={addTodo} />
         <br />
         <br />
-        <TodoList todos={todos} onDeleteTodo={deleteTodo} onEditTodo={editTodo} onToggleTodoComplete={toggleTodoComplete} />
+        <TodoList
+            todos={todos}
+            onDeleteTodo={deleteTodo}
+            onEditTodo={editTodo}
+            onToggleTodoComplete={toggleTodoComplete}
+            isPlaying={isPlaying}
+        />
     </Fragment>;
 }
 

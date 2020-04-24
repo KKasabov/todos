@@ -13,25 +13,26 @@ import {
     TodoActionType
 } from '../store/types';
 import 'jest-extended';
+import moment from 'moment';
 
 describe('testing reducer functionality', () => {
     const defaultState: AppState = {
         todos: [
-            { id: '0', name: 'First todo', description: 'First todo description', created_at: new Date(), is_complete: false },
-            { id: '1', name: 'Second todo', description: 'Second todo description', created_at: new Date(), is_complete: false }
+            { id: '0', name: 'First todo', description: 'First todo description', created_at: moment(), is_complete: false },
+            { id: '1', name: 'Second todo', description: 'Second todo description', created_at: moment(), is_complete: false }
         ],
         isRecording: false,
         isPlaying: false,
         currentRecording: {
             id: '0123',
-            created_at: new Date('2020-04-23T11:32:48.871Z'),
+            created_at: moment('2020-04-23T11:32:48'),
             actions: [],
             initialTodos: [
                 {
                     id: '0222',
                     name: 'initial todo inside recording',
                     description: '',
-                    created_at: new Date(),
+                    created_at: moment(),
                     is_complete: false
                 },
             ]
@@ -47,7 +48,7 @@ describe('testing reducer functionality', () => {
                 id: '0',
                 name: 'Todo name',
                 description: 'Todo description',
-                created_at: new Date('2020-04-22T13:28:56.321Z')
+                created_at: moment('2020-04-22T13:28:56')
             }
         }).todos;
 
@@ -127,13 +128,13 @@ describe('testing reducer functionality', () => {
             type: PLAY_RECORDING,
             payload: {
                 id: '234',
-                created_at: new Date('2020-04-23T12:32:48.871Z'),
+                created_at: moment('2020-04-23T12:32:48'),
                 actions: [
                     {
                         type: ADD_TODO,
                         payload: {
                             id: '456',
-                            created_at: new Date('2020-04-23T12:12:48.871Z'),
+                            created_at: moment('2020-04-23T12:12:48'),
                             name: 'dummy name',
                             description: 'dummy description'
                         }

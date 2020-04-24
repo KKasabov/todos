@@ -1,5 +1,6 @@
 import React, { FC, Fragment } from 'react'
 import { Recording, SetIsRecording, PlayRecording } from '../store/types'
+import moment from 'moment';
 
 interface RecordingsListProps {
     recordings: Recording[],
@@ -17,7 +18,7 @@ const RecordingsList: FC<RecordingsListProps> = ({ recordings, isRecording, isPl
             {recordings.map(rec => {
                 return (
                     <li key={rec.id!}>
-                        {rec.created_at!.toLocaleString()}
+                        {moment(rec.created_at!).format('DD MMM YYYY HH:mm:ss')}
                         {isPlaying
                             ? <button onClick={() => onExit(rec)}>Exit</button>
                             : <button onClick={() => onPlay(rec)}>Play</button>

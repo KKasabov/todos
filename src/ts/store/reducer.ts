@@ -13,6 +13,7 @@ import {
     PLAY_RECORDING,
     EXIT_RECORDING
 } from './types';
+import moment from 'moment';
 
 export const initialState: AppState = {
     todos: [],
@@ -72,7 +73,7 @@ const reducer = (state = initialState, action: AppActionType): AppState => {
                 isRecording: true,
                 currentRecording: {
                     id: uniqueID(),
-                    created_at: new Date(),
+                    created_at: moment(),
                     actions: [],
                     initialTodos: [...state.todos]
                 }
