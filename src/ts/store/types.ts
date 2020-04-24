@@ -104,7 +104,7 @@ export type EditTodo = (id: string, name: string, description: string) => void
 export type DeleteTodo = (id: string) => void
 export type ToggleTodoComplete = (id: string) => void
 
-//recodging function type
+//recording function types
 export type SetIsRecording = () => void
 export type RecordAction = (action: TodoActionType) => void
 export type PlayRecording = (recording: Recording) => void
