@@ -1,6 +1,6 @@
-import React, { FC, Fragment, useState, useEffect } from 'react';
+import React, { FC } from 'react';
 import { Todo, EditTodo, DeleteTodo, ToggleTodoComplete } from '../store/types';
-import { FiCheck, FiEdit, FiTrash2 } from 'react-icons/fi';
+import { FiCheck, FiTrash2 } from 'react-icons/fi';
 import TodoForm from './todo-form';
 import { formatDate } from '../util/date-formatter';
 
