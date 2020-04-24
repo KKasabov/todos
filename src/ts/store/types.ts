@@ -1,3 +1,4 @@
+import { Moment } from 'moment';
 // redux constants
 export const ADD_TODO = 'ADD_TODO';
 export const EDIT_TODO = 'EDIT_TODO';
@@ -13,12 +14,12 @@ export interface Todo {
     readonly id: string,
     name: string,
     description: string,
-    readonly created_at: Date,
+    readonly created_at: Moment,
     is_complete: boolean
 };
 
 export interface Recording {
-    readonly created_at?: Date,
+    readonly created_at?: Moment,
     readonly id?: string,
     actions?: TodoActionType[],
     initialTodos?: Todo[]
@@ -45,7 +46,7 @@ interface AddTodoAction {
         id: string,
         name: string,
         description: string,
-        created_at: Date
+        created_at: Moment
     }
 };
 
@@ -99,7 +100,7 @@ export type RecordingActionType = StartRecordingAction | StopRecordingAction | A
 export type AppActionType = TodoActionType | RecordingActionType;
 
 // todo functions types
-export type AddTodo = (name: string, description: string, id?: string, timestamp?: Date) => void
+export type AddTodo = (name: string, description: string, id?: string, timestamp?: Moment) => void
 export type EditTodo = (id: string, name: string, description: string) => void
 export type DeleteTodo = (id: string) => void
 export type ToggleTodoComplete = (id: string) => void

@@ -3,6 +3,7 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const MomentLocalesPlugin = require('moment-locales-webpack-plugin')
 
 module.exports = {
     entry: {
@@ -16,6 +17,7 @@ module.exports = {
             hash: true
         }),
         new ManifestPlugin(),
+        new MomentLocalesPlugin(),
     ],
     output: {
         path: path.resolve(__dirname, 'dist'),

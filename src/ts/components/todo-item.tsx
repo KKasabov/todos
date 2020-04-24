@@ -2,19 +2,26 @@ import React, { FC } from 'react';
 import { Todo, EditTodo, DeleteTodo, ToggleTodoComplete } from '../store/types';
 import { FiCheck, FiTrash2 } from 'react-icons/fi';
 import TodoForm from './todo-form';
-import { formatDate } from '../util/date-formatter';
+import moment, { Moment } from 'moment';
 
 interface TodoItemPros {
     todo: Todo,
     onEdit: EditTodo,
     onDelete: DeleteTodo,
-    onToggleComplete: ToggleTodoComplete
+    onToggleComplete: ToggleTodoComplete,
+    isPlaying: boolean
 }
 
-const TodoItem: FC<TodoItemPros> = ({ todo, onDelete, onEdit, onToggleComplete }) => {
+const fromNowOrJustNow = (m: Moment) => {
+    if (Math.abs(m.diff()) < 60000) {
+        return 'just now';
+    }
+    return m.fromNow();
+}
+
+const TodoItem: FC<TodoItemPros> = ({ todo, onDelete, onEdit, onToggleComplete, isPlaying }) => {
     const { id, name, description, created_at, is_complete } = todo;
-    const isoDate = created_at.toISOString(),
-        formattedDate = formatDate(created_at);
+    const formattedDate = isPlaying ? moment(created_at).format('HH:mm:ss') : fromNowOrJustNow(moment(created_at));
 
     return <li className={`todo-item${is_complete ? ' todo-item--complete' : ''}`} key={id} value={id}>
         <TodoForm
@@ -28,7 +35,7 @@ const TodoItem: FC<TodoItemPros> = ({ todo, onDelete, onEdit, onToggleComplete }
             <div className="todo-item__control-item js-todo-item-toggle-complete" onClick={() => onToggleComplete(id)}><FiCheck /></div>
             <div className="todo-item__control-item  js-todo-item-delete" onClick={() => onDelete(id)}><FiTrash2 /></div>
         </div>
-        <time className="todo-item__date" dateTime={isoDate}>{formattedDate}</time>
+        <time className="todo-item__date" dateTime={created_at.toString()}>{formattedDate}</time>
     </li>;
 };
 

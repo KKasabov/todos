@@ -17,6 +17,7 @@ import {
     EXIT_RECORDING
 } from './types';
 import { v4 as uniqueID } from 'uuid';
+import moment from 'moment';
 
 export const addTodo: AddTodo = (name, description, id, timestamp): TodoActionType => ({
     type: ADD_TODO,
@@ -24,7 +25,7 @@ export const addTodo: AddTodo = (name, description, id, timestamp): TodoActionTy
         name,
         description,
         id: id || uniqueID(),
-        created_at: timestamp || new Date()
+        created_at: timestamp || moment()
     }
 });
 
