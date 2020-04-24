@@ -29,7 +29,7 @@ const RecordingsList: FC<RecordingsListProps> = ({ recordings, isRecording, isPl
                     </li>
                 );
             })}
-            <button onClick={() => onDeleteAll()}>Delete all</button>
+            <button onClick={() => onDeleteAll()}>Delete ALL</button>
         </ul>
         <button onClick={() => isRecording ? onStopRecording() : onStartRecording()}>{isRecording ? 'Stop' : 'Start'} recording</button>
     </Fragment>;
