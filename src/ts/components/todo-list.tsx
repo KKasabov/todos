@@ -36,7 +36,7 @@ const TodoList: FC<TodoListProps> = ({ todos, onDeleteTodo, onEditTodo, onToggle
                                             : 0;
                         })
                         .map(todo => <TodoItem key={todo.id} todo={todo} onDelete={onDeleteTodo} onEdit={onEditTodo} onToggleComplete={onToggleTodoComplete} isPlaying={isPlaying} />)
-                    : <div className="todo-list__empty">All done!</div>
+                    : <li className="todo__note">All done!</li>
             }
         </ul>
     );
