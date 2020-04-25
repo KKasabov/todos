@@ -50,8 +50,9 @@ const App: FC<AppProps> = (
 ) => {
     const programmaticallyAddTodo = (id: string, name: string, description: string, timestamp: Moment) => {
         return new Promise<string>((resolve) => {
-            const nameInput: HTMLInputElement = document.getElementById('name')! as HTMLInputElement;
-            const descriptionInput: HTMLInputElement = document.getElementById('description')! as HTMLInputElement;
+            const form = document.querySelector('.js-form-main')!;
+            const nameInput: HTMLInputElement = form.querySelector('.js-todo-name')! as HTMLInputElement;
+            const descriptionInput: HTMLInputElement = form.querySelector('.js-todo-description')! as HTMLInputElement;
 
             if (nameInput.value !== name) {
                 typeText(nameInput, name).then(() => {
@@ -78,27 +79,31 @@ const App: FC<AppProps> = (
     }
 
     const programmaticallyEditTodo = (id: string, name: string, description: string) => {
-        return new Promise<string>(resolve => {
+        return new Promise<string>(async resolve => {
             const todoItem = document.querySelector(`li[value='${id}']`)!;
-            const form = todoItem.querySelector(`form`)!;
-            const nameInput = form.querySelector('#name')! as HTMLInputElement;
-            const descriptionInput = form.querySelector('#description')! as HTMLInputElement;
+            const form = todoItem.querySelector('.js-form')!;
+            const nameInput = form.querySelector('.js-todo-name-inner')! as HTMLInputElement;
+            const descriptionInput = form.querySelector('.js-todo-description-inner')! as HTMLInputElement;
+            const editButton = form.querySelector('.js-todo-edit')! as HTMLButtonElement;
+            const saveButton = form.querySelector('.js-todo-save')! as HTMLButtonElement;
 
+            editButton.click();
+            await timer(2000);
             if (name !== nameInput.value) {
                 typeText(nameInput, name).then(() => {
                     if (description !== descriptionInput.value) {
                         typeText(descriptionInput, description).then(() => {
-                            form.blur();
+                            saveButton.click();
                             resolve();
                         });
                     } else {
-                        form.blur();
+                        saveButton.click();
                         resolve();
                     }
                 });
             } else if (description !== descriptionInput.value) {
                 typeText(descriptionInput, description).then(() => {
-                    form.blur();
+                    saveButton.click();
                     resolve();
                 });
             }
@@ -108,7 +113,7 @@ const App: FC<AppProps> = (
     const programaticallyToggleTodoComplete = (id: string) => {
         return new Promise<string>((resolve) => {
             const todoItem = document.querySelector(`li[value='${id}']`)!;
-            const toggle = todoItem.querySelector('.js-todo-item-toggle-complete')! as HTMLElement;
+            const toggle = todoItem.querySelector('.js-todo-toggle')! as HTMLElement;
 
             toggle.click();
             resolve();
@@ -118,7 +123,7 @@ const App: FC<AppProps> = (
     const programmaticallyDeleteTodo = (id: string) => {
         return new Promise<string>((resolve) => {
             const todoItem = document.querySelector(`li[value='${id}']`)!;
-            const deleteButton = todoItem.querySelector('.js-todo-item-delete')! as HTMLElement;
+            const deleteButton = todoItem.querySelector('.js-todo-delete')! as HTMLElement;
 
             deleteButton.click();
             resolve();
