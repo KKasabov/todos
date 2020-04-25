@@ -5,7 +5,8 @@
     "scripts": {
         "test": "jest",
         "build": "webpack --config webpack.prod.js",
-        "start": "webpack-dev-server --hot --open --config webpack.dev.js"
+        "dev": "webpack-dev-server --hot --open --config webpack.dev.js",
+        "start": "node server.js"
     },
     "repository": {
         "type": "git",
@@ -27,7 +28,8 @@
         "react-hot-loader": "^4.12.20",
         "redux-devtools-extension": "^2.13.8",
         "redux-persist": "^6.0.0",
-        "redux-thunk": "^2.3.0"
+        "redux-thunk": "^2.3.0",
+        "express": "^4.17.1"
     },
     "devDependencies": {
         "@babel/core": "^7.9.0",
@@ -64,6 +66,7 @@
         "webpack-cli": "^3.3.11",
         "webpack-dev-server": "^3.10.3",
         "webpack-manifest-plugin": "^2.2.0",
-        "webpack-merge": "^4.2.2"
+        "webpack-merge": "^4.2.2",
+        "nodemon": "^2.0.3"
     }
 }
