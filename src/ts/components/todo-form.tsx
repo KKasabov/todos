@@ -55,6 +55,7 @@ const TodoForm: FC<TodoFormProps> = ({ isItem, id, name, description, is_complet
                         <label htmlFor="todo-completed-1" className="custom-checkbox toggle-visible">
                             <input type="checkbox" name="todo-completed-1" id="todo-completed-1" className="custom-checkbox__input" />
                             <span className="custom-checkbox__text" onClick={() => {
+                                todoFormRef.current!.classList.toggle('is-completed');
                                 dropdownRef.current!.classList.remove('is-active');
                                 onToggleTodo ? onToggleTodo(id!) : null;
                             }}>
@@ -114,7 +115,10 @@ const TodoForm: FC<TodoFormProps> = ({ isItem, id, name, description, is_complet
                             </button>
                         </li>
                         <li className="dropdown-list__item">
-                            <button type="button" className="dropdown-list__button dropdown-list__button--delete">
+                            <button type="button" className="dropdown-list__button dropdown-list__button--delete" onClick={() => {
+                                dropdownRef.current!.classList.remove('is-active');
+                                onDeleteTodo!(id!);
+                            }}>
                                 <span className="dropdown-list__button-text">Delete</span>
                             </button>
                         </li>
