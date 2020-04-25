@@ -132,7 +132,7 @@ const TodoForm: FC<TodoFormProps> = ({ isItem, id, name, description, is_complet
             <form className="form" onSubmit={onSubmit} ref={todoFormRef}>
                 <fieldset className="form__fieldset">
                     <div className="site-form__element">
-                        <legend className="form__legend">Test Todo TEEEEEEST</legend>
+                        <legend className="form__legend">Todo</legend>
                         <ul className="form__list">
                             <li className="form__list-item">
                                 <div className="form__component">
