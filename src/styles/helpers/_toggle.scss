@@ -1,0 +1,14 @@
+.toggle {
+    &-hidden {
+        display: none !important;
+        .is-toggled & {
+            display: block !important;
+        }
+    }
+
+    &-visible {
+        .is-toggled & {
+            display: none !important;
+        }
+    }
+}

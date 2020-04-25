@@ -1,0 +1,49 @@
+.button {
+    display: inline-block;
+    border: 0;
+    font-size: 16px;
+    line-height: 1.1;
+    padding: 9px 25px;
+    transition: 0.3s ease;
+    border: 1px solid transparent;
+    cursor: pointer;
+    border-radius: 4px;
+
+    &--main {
+        background-color: $primary;
+        color: $white;
+        border-color: $primary;
+
+        &:hover {
+            border-color: darken($primary, 10);
+            background-color: darken($primary, 10);
+        }
+    }
+
+    &--outline {
+        background-color: rgba($black, 0.1);
+        border-color: rgba($black, 0.1);
+
+        &:hover {
+            background-color: rgba($black, 0.15);
+        }
+    }
+
+    &-holder {
+        display: flex;
+        align-items: center;
+        padding-top: 15px;
+
+        &--right {
+            justify-content: flex-end;
+        }
+    }
+
+    &-holder & {
+        margin-right: 10px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+    }
+}
