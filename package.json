@@ -6,8 +6,7 @@
         "test": "jest",
         "build": "webpack --config webpack.prod.js",
         "dev": "webpack-dev-server --hot --open --config webpack.dev.js",
-        "start": "node server.js",
-        "heroku-postbuild": "webpack --config webpack.prod.js"
+        "start": "node server.js"
     },
     "repository": {
         "type": "git",
