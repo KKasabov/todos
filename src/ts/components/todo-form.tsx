@@ -49,13 +49,13 @@ const TodoForm: FC<TodoFormProps> = ({ isItem, id, name, description, is_complet
         const dropdownRef = useRef<HTMLDivElement>(null);
 
         return (
-            <form className={`form form--inner ${is_complete ? 'is-completed' : ''}`} onSubmit={onSubmit} ref={todoFormRef}>
+            <form className={`js-form form form--inner ${is_complete ? 'is-completed' : ''}`} onSubmit={onSubmit} ref={todoFormRef}>
                 <ul className="form__list">
                     <li className="form__list-item">
-                        <label htmlFor="todo-completed-1" className="custom-checkbox toggle-visible">
-                            <input type="checkbox" name="todo-completed-1" id="todo-completed-1" className="custom-checkbox__input"
-                                checked={is_complete} />
-                            <span className="custom-checkbox__text" onClick={() => {
+                        <label htmlFor="todo-completed" className="custom-checkbox toggle-visible">
+                            <input type="checkbox" name="todo-completed" id="todo-completed" className="custom-checkbox__input"
+                                defaultChecked={is_complete} />
+                            <span className="custom-checkbox__text js-todo-toggle" onClick={() => {
                                 todoFormRef.current!.classList.toggle('is-completed');
                                 dropdownRef.current!.classList.remove('is-active');
                                 onToggleTodo ? onToggleTodo(id!) : null;
@@ -64,9 +64,9 @@ const TodoForm: FC<TodoFormProps> = ({ isItem, id, name, description, is_complet
                             </span>
                         </label>
                         <div className="form__component toggle-hidden">
-                            <label htmlFor="todo-name" className="form__label">Title</label>
-                            <input id="todo-name" name="name" className="form__input" type="text"
-                                autoComplete="off" defaultValue={name} autoFocus={!isItem} ref={
+                            <label htmlFor="todo-name-inner" className="form__label">Title</label>
+                            <input id="todo-name-inner" name="name" className="form__input js-todo-name-inner"
+                                type="text" autoComplete="off" defaultValue={name} autoFocus={!isItem} ref={
                                     register({
                                         required: true,
                                         pattern: /^(?!\s*$).+/
@@ -81,15 +81,15 @@ const TodoForm: FC<TodoFormProps> = ({ isItem, id, name, description, is_complet
                     <li className="form__list-item">
                         <p className="todo__description toggle-visible">{description}</p>
                         <div className="form__component toggle-hidden">
-                            <label htmlFor="todo-description" className="form__label">Description</label>
-                            <input id="todo-description" name="description" className="form__input" type="text"
-                                autoComplete="off" defaultValue={description?.trim()} ref={register()} />
+                            <label htmlFor="todo-description-inner" className="form__label">Description</label>
+                            <input id="todo-description-inner" name="description" className="form__input js-todo-description-inner"
+                                type="text" autoComplete="off" defaultValue={description?.trim()} ref={register()} />
                         </div>
                     </li>
                 </ul>
                 <div className="toggle-hidden">
                     <div className="button-holder button-holder--right">
-                        <button type="submit" className="button button--main">
+                        <button type="submit" className="button button--main js-todo-save">
                             <span className="button__text">Save</span>
                         </button>
                         <button type="button" className="button button--outline" onClick={() => {
@@ -107,16 +107,17 @@ const TodoForm: FC<TodoFormProps> = ({ isItem, id, name, description, is_complet
                     </button>
                     <ul className="dropdown-list">
                         <li className="dropdown-list__item">
-                            <button type="button" className="dropdown-list__button dropdown-list__button--edit" onClick={() => {
-                                todoFormRef.current!.classList.remove('is-completed');
-                                todoFormRef.current!.classList.add('is-toggled');
-                                dropdownRef.current!.classList.remove('is-active');
-                            }}>
+                            <button type="button" className="dropdown-list__button dropdown-list__button--edit js-todo-edit"
+                                onClick={() => {
+                                    todoFormRef.current!.classList.remove('is-completed');
+                                    todoFormRef.current!.classList.add('is-toggled');
+                                    dropdownRef.current!.classList.remove('is-active');
+                                }}>
                                 <span className="dropdown-list__button-text">Edit</span>
                             </button>
                         </li>
                         <li className="dropdown-list__item">
-                            <button type="button" className="dropdown-list__button dropdown-list__button--delete" onClick={() => {
+                            <button type="button" className="dropdown-list__button dropdown-list__button--delete js-todo-delete" onClick={() => {
                                 dropdownRef.current!.classList.remove('is-active');
                                 onDeleteTodo!(id!);
                             }}>
@@ -130,7 +131,7 @@ const TodoForm: FC<TodoFormProps> = ({ isItem, id, name, description, is_complet
         );
     } else {
         return (
-            <form className="form" onSubmit={onSubmit} ref={todoFormRef}>
+            <form className="form js-form-main" onSubmit={onSubmit} ref={todoFormRef}>
                 <fieldset className="form__fieldset">
                     <div className="site-form__element">
                         <legend className="form__legend">Test Todo TEEEEEEST</legend>
@@ -138,7 +139,7 @@ const TodoForm: FC<TodoFormProps> = ({ isItem, id, name, description, is_complet
                             <li className="form__list-item">
                                 <div className="form__component">
                                     <label htmlFor="todo-name" className="form__label">Title</label>
-                                    <input id="todo-name" name="name" className="form__input" type="text"
+                                    <input id="todo-name" name="name" className="form__input js-todo-name" type="text"
                                         autoComplete="off" defaultValue={name} autoFocus={!isItem} ref={
                                             register({
                                                 required: true,
@@ -154,7 +155,7 @@ const TodoForm: FC<TodoFormProps> = ({ isItem, id, name, description, is_complet
                             <li className="form__list-item">
                                 <div className="form__component">
                                     <label htmlFor="todo-description" className="form__label">Description</label>
-                                    <input id="todo-description" name="description" className="form__input" type="text"
+                                    <input id="todo-description" name="description" className="form__input js-todo-description" type="text"
                                         autoComplete="off" defaultValue={description} ref={register()} />
                                 </div>
                             </li>
