@@ -1,6 +1,5 @@
 import React, { FC } from 'react';
 import { Todo, EditTodo, DeleteTodo, ToggleTodoComplete } from '../store/types';
-import { FiCheck, FiTrash2 } from 'react-icons/fi';
 import TodoForm from './todo-form';
 import moment, { Moment } from 'moment';
 
@@ -22,21 +21,25 @@ const fromNowOrJustNow = (m: Moment) => {
 const TodoItem: FC<TodoItemPros> = ({ todo, onDelete, onEdit, onToggleComplete, isPlaying }) => {
     const { id, name, description, created_at, is_complete } = todo;
     const formattedDate = isPlaying ? moment(created_at).format('HH:mm:ss') : fromNowOrJustNow(moment(created_at));
-
-    return <li className={`todo-item${is_complete ? ' todo-item--complete' : ''}`} key={id} value={id}>
-        <TodoForm
-            isItem={true}
-            onEditTodo={onEdit}
-            id={id}
-            name={name}
-            description={description}
-        />
-        <div className="todo-item__control-list">
-            <div className="todo-item__control-item js-todo-item-toggle-complete" onClick={() => onToggleComplete(id)}><FiCheck /></div>
-            <div className="todo-item__control-item  js-todo-item-delete" onClick={() => onDelete(id)}><FiTrash2 /></div>
-        </div>
-        <time className="todo-item__date" dateTime={created_at.toString()}>{formattedDate}</time>
-    </li>;
+    const dates = {
+        iso: moment(created_at).toISOString(),
+        formatted: formattedDate
+    }
+    return (
+        <li className="todo__list-item" key={id} value={id}>
+            <TodoForm
+                isItem={true}
+                id={id}
+                name={name}
+                description={description}
+                created_at={dates}
+                is_complete={is_complete}
+                onEditTodo={onEdit}
+                onDeleteTodo={onDelete}
+                onToggleTodo={onToggleComplete}
+            />
+        </li>
+    );
 };
 
 export default TodoItem;

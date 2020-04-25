@@ -191,31 +191,33 @@ const App: FC<AppProps> = (
         playActionChain([...recording.actions!]);
     }
 
-    return <Fragment>
-        <RecordingsList
-            recordings={recordings}
-            isPlaying={isPlaying}
-            isRecording={isRecording}
-            onPlay={playRec}
-            onExit={exitRecording}
-            onDelete={deleteRecording}
-            onDeleteAll={deleteAllRecordings}
-            onStartRecording={startRecording}
-            onStopRecording={stopRecording}
-        />
-        <br />
-        <br />
-        <TodoForm onAddTodo={addTodo} />
-        <br />
-        <br />
-        <TodoList
-            todos={todos}
-            onDeleteTodo={deleteTodo}
-            onEditTodo={editTodo}
-            onToggleTodoComplete={toggleTodoComplete}
-            isPlaying={isPlaying}
-        />
-    </Fragment>;
+    return (
+        <div className="todo">
+            <header className="todo__header">
+                <RecordingsList
+                    recordings={recordings}
+                    isPlaying={isPlaying}
+                    isRecording={isRecording}
+                    onPlay={playRec}
+                    onExit={exitRecording}
+                    onDelete={deleteRecording}
+                    onDeleteAll={deleteAllRecordings}
+                    onStartRecording={startRecording}
+                    onStopRecording={stopRecording}
+                />
+            </header>
+            <main className="todo__content">
+                <TodoForm onAddTodo={addTodo} />
+                <TodoList
+                    todos={todos}
+                    onDeleteTodo={deleteTodo}
+                    onEditTodo={editTodo}
+                    onToggleTodoComplete={toggleTodoComplete}
+                    isPlaying={isPlaying}
+                />
+            </main>
+        </div>
+    );
 }
 
 export default connector(hot(App));
