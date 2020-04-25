@@ -133,35 +133,33 @@ const TodoForm: FC<TodoFormProps> = ({ isItem, id, name, description, is_complet
         return (
             <form className="form js-form-main" onSubmit={onSubmit} ref={todoFormRef}>
                 <fieldset className="form__fieldset">
-                    <div className="site-form__element">
-                        <legend className="form__legend">Todo</legend>
-                        <ul className="form__list">
-                            <li className="form__list-item">
-                                <div className="form__component">
-                                    <label htmlFor="todo-name" className="form__label">Title</label>
-                                    <input id="todo-name" name="name" className="form__input js-todo-name" type="text"
-                                        autoComplete="off" defaultValue={name} autoFocus={!isItem} ref={
-                                            register({
-                                                required: true,
-                                                pattern: /^(?!\s*$).+/
-                                            })
-                                        } />
-                                    {errors.name && errors.name.type === 'required'
-                                        && <span id="name-error" className="form__error">Please enter a name</span>}
-                                    {errors.name && errors.name.type === 'pattern'
-                                        && <span id="name-error" className="form__error">Please enter at least one non-empty character</span>}
-                                </div>
-                            </li>
-                            <li className="form__list-item">
-                                <div className="form__component">
-                                    <label htmlFor="todo-description" className="form__label">Description</label>
-                                    <input id="todo-description" name="description" className="form__input js-todo-description" type="text"
-                                        autoComplete="off" defaultValue={description} ref={register()} />
-                                </div>
-                            </li>
+                    <legend className="form__legend">Todo</legend>
+                    <ul className="form__list">
+                        <li className="form__list-item">
+                            <div className="form__component">
+                                <label htmlFor="todo-name" className="form__label">Title</label>
+                                <input id="todo-name" name="name" className="form__input js-todo-name" type="text"
+                                    autoComplete="off" defaultValue={name} autoFocus={!isItem} ref={
+                                        register({
+                                            required: true,
+                                            pattern: /^(?!\s*$).+/
+                                        })
+                                    } />
+                                {errors.name && errors.name.type === 'required'
+                                    && <span id="name-error" className="form__error">Please enter a name</span>}
+                                {errors.name && errors.name.type === 'pattern'
+                                    && <span id="name-error" className="form__error">Please enter at least one non-empty character</span>}
+                            </div>
+                        </li>
+                        <li className="form__list-item">
+                            <div className="form__component">
+                                <label htmlFor="todo-description" className="form__label">Description</label>
+                                <input id="todo-description" name="description" className="form__input js-todo-description" type="text"
+                                    autoComplete="off" defaultValue={description} ref={register()} />
+                            </div>
+                        </li>
 
-                        </ul>
-                    </div>
+                    </ul>
                     <div className="button-holder">
                         <button type="submit" className="button button--main">
                             <span className="button__text">Add</span>
