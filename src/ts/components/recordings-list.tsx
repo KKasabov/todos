@@ -1,41 +1,65 @@
-import React, { FC, Fragment } from 'react'
-import { Recording, SetIsRecording, PlayRecording, DeleteRecording, DeleteAllRecordings } from '../store/types'
+import React from 'react';
+import { Recording, PlayRecording, DeleteRecording } from '../store/types';
 import moment from 'moment';
 
 interface RecordingsListProps {
-    recordings: Recording[],
-    isPlaying: boolean,
-    isRecording: boolean,
-    onPlay: PlayRecording,
-    onExit: PlayRecording,
-    onDelete: DeleteRecording,
-    onDeleteAll: DeleteAllRecordings,
-    onStartRecording: SetIsRecording,
-    onStopRecording: SetIsRecording
+  recordings?: Recording[];
+  onPlay?: PlayRecording;
+  onExit?: PlayRecording;
+  onDelete?: DeleteRecording;
 }
 
-const RecordingsList: FC<RecordingsListProps> = ({ recordings, isRecording, isPlaying, onPlay, onExit, onDelete, onDeleteAll, onStopRecording, onStartRecording }) => {
-    return <Fragment>
-        <ul>
-            {recordings.map(rec => {
-                return (
-                    <li key={rec.id!}>
-                        {moment(rec.created_at!).format('DD MMM YYYY HH:mm:ss')}
-                        {isPlaying
-                            ? <button onClick={() => onExit(rec)}>Exit</button>
-                            : <button onClick={() => onPlay(rec)}>Play</button>
-                        }
-                        <button onClick={() => onDelete(rec.id!)}>Delete</button>
-                    </li>
-                );
+const RecordingsList = ({
+  recordings,
+  onPlay,
+  onExit,
+  onDelete,
+}: RecordingsListProps) => {
+  return (
+    <div className="todo-recording">
+      <ul className="todo-recording__list">
+        {recordings &&
+          recordings
+            .sort((a: Recording, b: Recording) => {
+              const currentDate = moment(a.createdAt);
+              const nextDate = moment(b.createdAt);
+
+              return currentDate.isAfter(nextDate)
+                ? -1
+                : currentDate.isBefore(nextDate)
+                ? 1
+                : 0;
+            })
+            .map((rec) => {
+              return (
+                <li key={rec.id} className="todo-recording__list-item">
+                  <div className="todo-recording__component">
+                    <div className="button-holder button-holder--no-padding">
+                      <button
+                        type="button"
+                        className="button"
+                        onClick={() => onPlay && onPlay(rec)}>
+                        <i className="button__icon button__icon--play"></i>
+                      </button>
+                    </div>
+                    <span className="todo-recording__title">
+                      {moment(rec.createdAt).format('DD MMM YYYY HH:mm:ss')}
+                    </span>
+                    <div className="button-holder button-holder--no-padding">
+                      <button
+                        type="button"
+                        className="button"
+                        onClick={() => onDelete && onDelete(rec.id)}>
+                        <i className="button__icon button__icon--delete"></i>
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              );
             })}
-            <button onClick={() => onDeleteAll()}>Delete ALL</button>
-        </ul>
-        <button type="button" className="button button--outline" onClick={() => isRecording ? onStopRecording() : onStartRecording()}>
-            <span className="button__text">{isRecording ? 'Stop' : 'Start'} recording</span>
-        </button>
-    </Fragment>;
+      </ul>
+    </div>
+  );
+};
 
-}
-
-export default RecordingsList
+export default RecordingsList;
