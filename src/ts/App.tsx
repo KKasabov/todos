@@ -55,7 +55,7 @@ const App = ({
   },
 }: AppProps) => {
   const typeText = (input: HTMLInputElement, text: string, speed = 75) => {
-    return new Promise<string>((resolve) => {
+    return new Promise<void>((resolve) => {
       input.value = '';
       let i = 0;
 
@@ -84,7 +84,7 @@ const App = ({
     description: string,
     timestamp: Moment
   ) => {
-    return new Promise<string>((resolve) => {
+    return new Promise<void>((resolve) => {
       const form = document.querySelector('.js-form-main');
       const nameInput: HTMLInputElement = form?.querySelector(
         '.js-todo-name'
@@ -122,7 +122,7 @@ const App = ({
     name: string,
     description: string
   ) => {
-    return new Promise<string>((resolve) => {
+    return new Promise<void>((resolve) => {
       const todoItem = document.querySelector(`li[value='${id}']`);
       const form = todoItem?.querySelector('.js-form');
       const nameInput = form?.querySelector(
@@ -163,7 +163,7 @@ const App = ({
   };
 
   const programaticallyToggleTodoComplete = (id: string) => {
-    return new Promise<string>((resolve) => {
+    return new Promise<void>((resolve) => {
       const todoItem = document.querySelector(`li[value='${id}']`);
       const toggle = todoItem?.querySelector('.js-todo-toggle') as HTMLElement;
 
@@ -173,7 +173,7 @@ const App = ({
   };
 
   const programmaticallyDeleteTodo = (id: string) => {
-    return new Promise<string>((resolve) => {
+    return new Promise<void>((resolve) => {
       const todoItem = document.querySelector(`li[value='${id}']`);
       const deleteButton = todoItem?.querySelector(
         '.js-todo-delete'
@@ -203,86 +203,92 @@ const App = ({
         return programaticallyToggleTodoComplete(id);
       }
       default: {
-        return new Promise<string>((resolve) => resolve());
+        return new Promise<void>((resolve) => resolve());
       }
     }
   };
 
   const playActionChain = (actions: TodoActionType[]) => {
+    const todo = document.querySelector('.js-todo') as HTMLDivElement;
     const nextAction = actions.shift();
+    console.log('nextAction: ', nextAction);
+    todo.classList.add('has-overlay');
     if (nextAction) {
       return playAction(nextAction).then(
-        async () => {
-          await timer(1000);
-          playActionChain(actions);
+        () => {
+          timer(1000).then(() => {
+            playActionChain(actions);
+          });
         },
         (error) => alert(error)
       );
     } else {
-      return Promise.resolve();
+      timer(2000).then(() => {
+        todo.classList.remove('has-overlay');
+        exitRecording();
+      });
     }
   };
 
   const playRec = async (recording: Recording) => {
     if (recording.actions) {
-      const body = document.querySelector('body') as HTMLBodyElement;
-      body.classList.add('has-overlay');
       playRecording(recording);
       await timer(2000);
 
-      playActionChain([...recording.actions]).then(() => {
-        exitRecording();
-        body.classList.remove('has-overlay');
-      });
+      playActionChain([...recording.actions]);
     }
   };
 
   return (
-    <div className="todo">
-      <header className="todo__header">
-        <button
-          type="button"
-          className={`button button--light button-video ${
-            isRecording ? 'is-active' : ''
-          }`}
-          onClick={() => (isRecording ? stopRecording() : startRecording())}>
-          <span className="button-video__icons">
-            <i className="button__icon button__icon--video-on" />
-            <i className="button__icon button__icon--video-off" />
-          </span>
-          <span className="button__text">
-            {isRecording ? 'Stop' : 'Start'} recording
-          </span>
-        </button>
-        {recordings.length > 0 ? (
-          <Fragment>
-            <RecordingsList
-              recordings={recordings}
-              onPlay={playRec}
-              onExit={exitRecording}
-              onDelete={deleteRecording}
-            />
-            <div className="button-holder button-holder--right button-holder--no-padding">
-              <button
-                type="button"
-                className="button button--accent"
-                onClick={() => deleteAllRecordings()}>
-                <span className="button__text">Delete all recordings</span>
-              </button>
-            </div>
-          </Fragment>
-        ) : null}
-      </header>
-      <main className="todo__content">
-        <TodoForm onAddTodo={addTodo} />
-        <TodoList
-          todos={todos}
-          onDeleteTodo={deleteTodo}
-          onEditTodo={editTodo}
-          onToggleTodoComplete={toggleTodoComplete}
-          isPlaying={isPlaying}
-        />
-      </main>
+    <div className="todo js-todo">
+      <div className="wrapper">
+        <header className="todo__header">
+          <button
+            type="button"
+            className={`button button--light button-video ${
+              isRecording ? 'is-active' : ''
+            }`}
+            onClick={() => (isRecording ? stopRecording() : startRecording())}
+          >
+            <span className="button-video__icons">
+              <i className="button__icon button__icon--video-on" />
+              <i className="button__icon button__icon--video-off" />
+            </span>
+            <span className="button__text">
+              {isRecording ? 'Stop' : 'Start'} recording
+            </span>
+          </button>
+          {recordings.length > 0 ? (
+            <Fragment>
+              <RecordingsList
+                recordings={recordings}
+                onPlay={playRec}
+                onExit={exitRecording}
+                onDelete={deleteRecording}
+              />
+              <div className="button-holder button-holder--right button-holder--no-padding">
+                <button
+                  type="button"
+                  className="button button--accent"
+                  onClick={() => deleteAllRecordings()}
+                >
+                  <span className="button__text">Delete all recordings</span>
+                </button>
+              </div>
+            </Fragment>
+          ) : null}
+        </header>
+        <main className="todo__content">
+          <TodoForm onAddTodo={addTodo} />
+          <TodoList
+            todos={todos}
+            onDeleteTodo={deleteTodo}
+            onEditTodo={editTodo}
+            onToggleTodoComplete={toggleTodoComplete}
+            isPlaying={isPlaying}
+          />
+        </main>
+      </div>
     </div>
   );
 };

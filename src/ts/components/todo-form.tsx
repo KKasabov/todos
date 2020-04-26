@@ -41,7 +41,9 @@ const TodoForm: FC<TodoFormProps> = ({
 }) => {
   const todoFormRef = useRef<HTMLFormElement>(null);
   const titleComponentRef = useRef<HTMLDivElement>(null);
-  const { handleSubmit, register, errors } = useForm<FormData>();
+  const { handleSubmit, register, errors } = useForm<FormData>({
+    reValidateMode: 'onSubmit',
+  });
 
   const onSubmit = handleSubmit((formData, e) => {
     const nameInputValue = formData.name.trim();
@@ -51,6 +53,7 @@ const TodoForm: FC<TodoFormProps> = ({
       if (id) {
         if (nameInputValue !== name || descriptionInputValue !== description) {
           onEditTodo && onEditTodo(id, nameInputValue, descriptionInputValue);
+          todoFormRef.current?.setAttribute('style', 'height:auto;');
         }
         todoFormRef.current?.classList.remove('is-toggled');
         e?.target.reset();
@@ -81,12 +84,14 @@ const TodoForm: FC<TodoFormProps> = ({
         }`}
         onSubmit={onSubmit}
         onBlur={() => toggleComponentHasError(titleComponentRef)}
-        ref={todoFormRef}>
+        ref={todoFormRef}
+      >
         <ul className="form__list">
           <li className="form__list-item">
             <label
               htmlFor="todo-completed"
-              className="custom-checkbox toggle-visible">
+              className="custom-checkbox toggle-visible"
+            >
               <input
                 type="checkbox"
                 name="todo-completed"
@@ -100,7 +105,8 @@ const TodoForm: FC<TodoFormProps> = ({
                   todoFormRef.current?.classList.toggle('is-completed');
                   dropdownRef.current?.classList.remove('is-active');
                   onToggleTodo ? id && onToggleTodo(id) : null;
-                }}>
+                }}
+              >
                 <strong className="custom-checkbox__text-title">{name}</strong>
               </span>
             </label>
@@ -108,7 +114,8 @@ const TodoForm: FC<TodoFormProps> = ({
             <div
               className={`form__component toggle-hidden ${
                 errors.name ? 'has-error' : ''
-              }`}>
+              }`}
+            >
               <label htmlFor="todo-name-inner" className="form__label">
                 Title
               </label>
@@ -166,7 +173,8 @@ const TodoForm: FC<TodoFormProps> = ({
               onClick={() => {
                 todoFormRef.current?.classList.remove('is-toggled');
                 todoFormRef.current?.reset();
-              }}>
+              }}
+            >
               <span className="button__text">Cancel</span>
             </button>
           </div>
@@ -182,7 +190,8 @@ const TodoForm: FC<TodoFormProps> = ({
               if (dropdownRef.current?.classList.contains('is-active')) {
                 dropdownRef.current?.classList.remove('is-active');
               }
-            }}>
+            }}
+          >
             <span className="dropdown__controller-text sr-only">
               dropdown button
             </span>
@@ -196,7 +205,8 @@ const TodoForm: FC<TodoFormProps> = ({
               if (dropdownRef.current?.classList.contains('is-active')) {
                 dropdownRef.current?.classList.remove('is-active');
               }
-            }}>
+            }}
+          >
             <li className="dropdown-list__item">
               <button
                 type="button"
@@ -205,7 +215,8 @@ const TodoForm: FC<TodoFormProps> = ({
                   todoFormRef.current?.classList.remove('is-completed');
                   todoFormRef.current?.classList.add('is-toggled');
                   dropdownRef.current?.classList.remove('is-active');
-                }}>
+                }}
+              >
                 <span className="dropdown-list__button-text">Edit</span>
               </button>
             </li>
@@ -216,7 +227,8 @@ const TodoForm: FC<TodoFormProps> = ({
                 onClick={() => {
                   dropdownRef.current?.classList.remove('is-active');
                   id && onDeleteTodo && onDeleteTodo(id);
-                }}>
+                }}
+              >
                 <span className="dropdown-list__button-text">Delete</span>
               </button>
             </li>
@@ -233,7 +245,8 @@ const TodoForm: FC<TodoFormProps> = ({
         className="form js-form-main"
         onSubmit={onSubmit}
         onBlur={() => toggleComponentHasError(titleComponentRef)}
-        ref={todoFormRef}>
+        ref={todoFormRef}
+      >
         <fieldset className="form__fieldset">
           <legend className="form__legend">Todo</legend>
           <ul className="form__list">
