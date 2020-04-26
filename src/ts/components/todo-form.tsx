@@ -66,7 +66,6 @@ const TodoForm: FC<TodoFormProps> = ({
       if (errors.name) {
         componentRef.current.classList.add('has-error');
       } else {
-        console.log('componentRef: ', componentRef);
         componentRef.current.classList.remove('has-error');
       }
     }
