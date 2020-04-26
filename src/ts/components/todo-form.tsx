@@ -166,6 +166,7 @@ const TodoForm: FC<TodoFormProps> = ({
               className="button button--outline"
               onClick={() => {
                 todoFormRef.current?.classList.remove('is-toggled');
+                todoFormRef.current?.reset();
               }}>
               <span className="button__text">Cancel</span>
             </button>
