@@ -1,6 +1,20 @@
 .todo {
+    padding: 50px 0;
+    min-height: 100vh;
+    &.has-overlay {
+        position: relative;
+        &:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba($black, 0.5);
+        }
+    }
     &__header {
-        padding: 20px 0 50px;
+        padding-bottom: 50px;
     }
     &__description {
         font-size: 14px;
