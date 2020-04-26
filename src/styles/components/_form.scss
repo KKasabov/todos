@@ -1,36 +1,31 @@
 .form {
     transition: background-color 0.3s ease;
+    position: relative;
+    background-color: $white;
 
     &--inner {
-        position: relative;
         padding: 30px 40px 30px 30px;
-
         @media (max-width: $phone-v) {
             padding: 30px 40px 25px 25px;
         }
-
         &.is-toggled {
             padding-right: 30px;
-
             @media (max-width: $phone-v) {
                 padding: 25px;
             }
         }
     }
-
     &.is-completed {
         background-color: rgba($primary, 0.1);
     }
-
     &__fieldset {
         border: 1px solid rgba($black, 0.1);
         padding: 10px 30px 30px;
-
+        border-radius: 4px;
         @media (max-width: $phone-v) {
             padding: 10px 25px 25px;
         }
     }
-
     &__legend {
         display: inline-block;
         font-size: 26px;
@@ -38,12 +33,10 @@
         text-align: center;
         margin-bottom: 20px;
         color: $black;
-
         @media (max-width: $phone-v) {
             font-size: 20px;
         }
     }
-
     &__label {
         font-size: 15px;
         display: block;
@@ -51,25 +44,21 @@
         margin-bottom: 2px;
         color: rgba($black, 0.7);
     }
-
     &__list {
         list-style: none;
         padding: 0;
         margin: 0;
-
         &-item {
             &:not(:first-child) {
                 padding-top: 10px;
             }
         }
     }
-
     &__textarea {
         width: 100%;
         background-color: transparent;
         border: 1px solid;
     }
-
     &__input {
         display: block;
         font-size: 16px;
@@ -84,17 +73,23 @@
         line-height: 1.2;
         padding: 8px 12px;
         border-radius: 4px;
-
+        .has-error & {
+            border-color: $danger;
+        }
         &::placeholder {
             color: rgba($black, 0.3);
         }
-
         &:hover {
             border-color: rgba($black, 0.3);
         }
     }
-
     &__asterisk {
+        color: $danger;
+    }
+    &__error {
+        display: block;
+        padding-top: 3px;
+        font-size: 12px;
         color: $danger;
     }
 }
@@ -108,7 +103,6 @@
         font-size: 16px;
         padding-left: 1.75em;
         display: inline-block;
-
         &:before,
         &:after {
             content: "";
@@ -118,7 +112,6 @@
             height: 1.125em;
             transition: 0.3s ease;
         }
-
         &:before {
             top: 1px;
             left: 0;
@@ -126,18 +119,16 @@
             border: 2px solid rgba($black, 0.3);
             background-color: $white;
         }
-
         &:after {
             background-image: url(../images/check.svg);
             background-repeat: no-repeat;
             transform: scale(0, 0);
-            width: 0.9375em;
-            height: 0.9375em;
+            width: 0.875em;
+            height: 0.875em;
             background-size: contain;
             top: 0.1875em;
-            left: 1px;
+            left: 0.125em;
         }
-
         &-title {
             font-size: 1em;
             color: $primary;
@@ -149,13 +140,11 @@
             user-select: none;
         }
     }
-
     &:hover &__text {
         &:before {
             border-color: $primary;
         }
     }
-
     &__input {
         display: none;
     }
@@ -164,12 +153,10 @@
         &:before {
             border-color: $primary;
         }
-
         &:after {
             transform: scale(1, 1);
         }
     }
-
     &__input:checked ~ &__text &__text-title {
         text-decoration-color: $black;
     }
