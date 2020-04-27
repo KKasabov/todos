@@ -94,7 +94,8 @@ const TodoForm: FC<TodoFormProps> = ({
                 name="todo-completed"
                 id="todo-completed"
                 className="custom-checkbox__input"
-                defaultChecked={isComplete}
+                checked={isComplete}
+                readOnly
               />
               <span
                 className="custom-checkbox__text js-todo-toggle"
