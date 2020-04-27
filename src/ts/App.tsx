@@ -214,10 +214,11 @@ const App = ({
     }
   };
 
-  const playActionChain = (actions: TodoActionType[]) => {
+  const playActionChain = async (actions: TodoActionType[]) => {
     const todo = document.querySelector('.js-todo') as HTMLDivElement;
     const nextAction = actions.shift();
     todo.classList.add('has-overlay');
+    await timer(1500);
     if (nextAction) {
       return playAction(nextAction).then(
         () => {
@@ -228,18 +229,14 @@ const App = ({
         (error) => alert(error)
       );
     } else {
-      timer(2000).then(() => {
-        todo.classList.remove('has-overlay');
-        exitRecording();
-      });
+      todo.classList.remove('has-overlay');
+      exitRecording();
     }
   };
 
   const playRec = async (recording: Recording) => {
     if (recording.actions) {
       playRecording(recording);
-      await timer(2000);
-
       playActionChain([...recording.actions]);
     }
   };
@@ -249,7 +246,10 @@ const App = ({
   return (
     <div className="todo js-todo">
       <div className="wrapper">
-        <header className="todo__header">
+        <header
+          className="todo__header"
+          style={isPlaying ? { pointerEvents: 'none' } : {}}
+        >
           <button
             type="button"
             className={`button button--light button-video ${
