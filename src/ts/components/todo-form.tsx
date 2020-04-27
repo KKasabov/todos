@@ -188,7 +188,6 @@ const TodoForm: FC<TodoFormProps> = ({
                 type="button"
                 className="dropdown-list__button dropdown-list__button--edit js-todo-edit"
                 onClick={() => {
-                  todoFormRef.current?.classList.remove('is-completed');
                   todoFormRef.current?.classList.add('is-toggled');
                 }}
               >
