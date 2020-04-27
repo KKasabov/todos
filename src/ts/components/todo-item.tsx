@@ -35,7 +35,7 @@ const TodoItem = ({
     formatted: formattedDate,
   };
   return (
-    <li className="todo__list-item" key={id} value={id}>
+    <li className="todo__list-item fade-in-down" key={id} value={id}>
       <TodoForm
         isItem={true}
         id={id}

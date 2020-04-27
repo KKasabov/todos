@@ -32,13 +32,17 @@ const RecordingsList = ({
             })
             .map((rec) => {
               return (
-                <li key={rec.id} className="todo-recording__list-item">
+                <li
+                  key={rec.id}
+                  className="todo-recording__list-item fade-in-right"
+                >
                   <div className="todo-recording__component">
                     <div className="button-holder button-holder--no-padding">
                       <button
                         type="button"
                         className="button"
-                        onClick={() => onPlay && onPlay(rec)}>
+                        onClick={() => onPlay && onPlay(rec)}
+                      >
                         <i className="button__icon button__icon--play"></i>
                       </button>
                     </div>
@@ -49,7 +53,12 @@ const RecordingsList = ({
                       <button
                         type="button"
                         className="button"
-                        onClick={() => onDelete && onDelete(rec.id)}>
+                        onClick={() => {
+                          setTimeout(() => {
+                            onDelete && onDelete(rec.id);
+                          }, 2000);
+                        }}
+                      >
                         <i className="button__icon button__icon--delete"></i>
                       </button>
                     </div>
