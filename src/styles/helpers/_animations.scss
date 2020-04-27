@@ -1,27 +1,22 @@
 .fade {
     &-in {
         animation: fadeIn 0.5s forwards;
-        transition: 0.5s ease;
         &-up {
             animation: fadeInUp 0.5s forwards;
-            transition: 0.5s ease;
         }
         &-down {
             animation: fadeInUp 0.5s forwards;
-            transition: 0.5s ease;
-        }
-        &-left {
-            animation: fadeInLeft 0.5s forwards;
-            transition: 0.5s ease;
         }
         &-right {
             animation: fadeInRight 0.5s forwards;
-            transition: 0.5s ease;
         }
     }
     &-out {
         animation: fadeOut 0.5s forwards;
-        transition: 0.5s ease;
+
+        &-left {
+            animation: fadeOutLeft 0.5s forwards;
+        }
     }
 }
 
@@ -55,17 +50,16 @@
         transform: translateX(0);
     }
 }
-@keyframes fadeInLeft {
+@keyframes fadeOutLeft {
     from {
-        opacity: 0;
+        opacity: 1;
         transform: translateX(-100%);
     }
     to {
-        opacity: 1;
+        opacity: 0;
         transform: translateX(0);
     }
 }
-
 @keyframes fadeOut {
     from {
         opacity: 1;
