@@ -86,7 +86,7 @@
             }
         }
     }
-    &.is-active & {
+    &:hover & {
         &__controller {
             opacity: 1;
         }

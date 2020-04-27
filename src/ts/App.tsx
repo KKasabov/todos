@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { useRef } from 'react';
 import { hot } from 'react-hot-loader/root';
 import TodoList from './components/todo-list';
 import TodoForm from './components/todo-form';
@@ -85,11 +85,11 @@ const App = ({
     timestamp: Moment
   ) => {
     return new Promise<void>((resolve) => {
-      const form = document.querySelector('.js-form-main');
-      const nameInput: HTMLInputElement = form?.querySelector(
+      const form = document.querySelector('.js-form-main') as HTMLFormElement;
+      const nameInput = form?.querySelector(
         '.js-todo-name'
       ) as HTMLInputElement;
-      const descriptionInput: HTMLInputElement = form?.querySelector(
+      const descriptionInput = form?.querySelector(
         '.js-todo-description'
       ) as HTMLInputElement;
 
@@ -123,7 +123,9 @@ const App = ({
     description: string
   ) => {
     return new Promise<void>((resolve) => {
-      const todoItem = document.querySelector(`li[value='${id}']`);
+      const todoItem = document.querySelector(
+        `li[value='${id}']`
+      ) as HTMLLIElement;
       const form = todoItem?.querySelector('.js-form');
       const nameInput = form?.querySelector(
         '.js-todo-name-inner'
@@ -164,7 +166,9 @@ const App = ({
 
   const programaticallyToggleTodoComplete = (id: string) => {
     return new Promise<void>((resolve) => {
-      const todoItem = document.querySelector(`li[value='${id}']`);
+      const todoItem = document.querySelector(
+        `li[value='${id}']`
+      ) as HTMLLIElement;
       const toggle = todoItem?.querySelector('.js-todo-toggle') as HTMLElement;
 
       toggle.click();
@@ -174,7 +178,9 @@ const App = ({
 
   const programmaticallyDeleteTodo = (id: string) => {
     return new Promise<void>((resolve) => {
-      const todoItem = document.querySelector(`li[value='${id}']`);
+      const todoItem = document.querySelector(
+        `li[value='${id}']`
+      ) as HTMLLIElement;
       const deleteButton = todoItem?.querySelector(
         '.js-todo-delete'
       ) as HTMLElement;
@@ -208,10 +214,11 @@ const App = ({
     }
   };
 
-  const playActionChain = (actions: TodoActionType[]) => {
+  const playActionChain = async (actions: TodoActionType[]) => {
     const todo = document.querySelector('.js-todo') as HTMLDivElement;
     const nextAction = actions.shift();
     todo.classList.add('has-overlay');
+    await timer(1500);
     if (nextAction) {
       return playAction(nextAction).then(
         () => {
@@ -222,26 +229,27 @@ const App = ({
         (error) => alert(error)
       );
     } else {
-      timer(2000).then(() => {
-        todo.classList.remove('has-overlay');
-        exitRecording();
-      });
+      todo.classList.remove('has-overlay');
+      exitRecording();
     }
   };
 
   const playRec = async (recording: Recording) => {
     if (recording.actions) {
       playRecording(recording);
-      await timer(2000);
-
       playActionChain([...recording.actions]);
     }
   };
 
+  const recListRef = useRef<HTMLDivElement>(null);
+
   return (
     <div className="todo js-todo">
       <div className="wrapper">
-        <header className="todo__header">
+        <header
+          className="todo__header"
+          style={isPlaying ? { pointerEvents: 'none' } : {}}
+        >
           <button
             type="button"
             className={`button button--light button-video ${
@@ -258,23 +266,31 @@ const App = ({
             </span>
           </button>
           {recordings.length > 0 ? (
-            <Fragment>
-              <RecordingsList
-                recordings={recordings}
-                onPlay={playRec}
-                onExit={exitRecording}
-                onDelete={deleteRecording}
-              />
+            <div ref={recListRef}>
+              <div className="todo-recording" ref={recListRef}>
+                <ul className="todo-recording__list">
+                  <RecordingsList
+                    recordings={recordings}
+                    onPlay={playRec}
+                    onDelete={deleteRecording}
+                  />
+                </ul>
+              </div>
               <div className="button-holder button-holder--right button-holder--no-padding">
                 <button
                   type="button"
                   className="button button--accent"
-                  onClick={() => deleteAllRecordings()}
+                  onClick={() => {
+                    recListRef.current?.classList.add('fade-out');
+                    setTimeout(() => {
+                      deleteAllRecordings();
+                    }, 500);
+                  }}
                 >
                   <span className="button__text">Delete all recordings</span>
                 </button>
               </div>
-            </Fragment>
+            </div>
           ) : null}
         </header>
         <main className="todo__content">

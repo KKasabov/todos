@@ -53,7 +53,6 @@ const TodoForm: FC<TodoFormProps> = ({
       if (id) {
         if (nameInputValue !== name || descriptionInputValue !== description) {
           onEditTodo && onEditTodo(id, nameInputValue, descriptionInputValue);
-          todoFormRef.current?.setAttribute('style', 'height:auto;');
         }
         todoFormRef.current?.classList.remove('is-toggled');
         e?.target.reset();
@@ -75,8 +74,6 @@ const TodoForm: FC<TodoFormProps> = ({
   };
 
   if (isItem) {
-    const dropdownRef = useRef<HTMLDivElement>(null);
-
     return (
       <form
         className={`js-form form form--inner ${
@@ -97,13 +94,13 @@ const TodoForm: FC<TodoFormProps> = ({
                 name="todo-completed"
                 id="todo-completed"
                 className="custom-checkbox__input"
-                defaultChecked={isComplete}
+                checked={isComplete}
+                readOnly
               />
               <span
                 className="custom-checkbox__text js-todo-toggle"
                 onClick={() => {
                   todoFormRef.current?.classList.toggle('is-completed');
-                  dropdownRef.current?.classList.remove('is-active');
                   onToggleTodo ? id && onToggleTodo(id) : null;
                 }}
               >
@@ -179,42 +176,19 @@ const TodoForm: FC<TodoFormProps> = ({
             </button>
           </div>
         </div>
-        <div className="dropdown toggle-visible" ref={dropdownRef}>
-          <button
-            type="button"
-            className="dropdown__controller"
-            onMouseOver={() => {
-              dropdownRef.current?.classList.toggle('is-active');
-            }}
-            onMouseOut={() => {
-              if (dropdownRef.current?.classList.contains('is-active')) {
-                dropdownRef.current?.classList.remove('is-active');
-              }
-            }}
-          >
+        <div className="dropdown toggle-visible">
+          <button type="button" className="dropdown__controller">
             <span className="dropdown__controller-text sr-only">
               dropdown button
             </span>
           </button>
-          <ul
-            className="dropdown-list"
-            onMouseOver={() => {
-              dropdownRef.current?.classList.add('is-active');
-            }}
-            onMouseOut={() => {
-              if (dropdownRef.current?.classList.contains('is-active')) {
-                dropdownRef.current?.classList.remove('is-active');
-              }
-            }}
-          >
+          <ul className="dropdown-list">
             <li className="dropdown-list__item">
               <button
                 type="button"
                 className="dropdown-list__button dropdown-list__button--edit js-todo-edit"
                 onClick={() => {
-                  todoFormRef.current?.classList.remove('is-completed');
                   todoFormRef.current?.classList.add('is-toggled');
-                  dropdownRef.current?.classList.remove('is-active');
                 }}
               >
                 <span className="dropdown-list__button-text">Edit</span>
@@ -225,7 +199,6 @@ const TodoForm: FC<TodoFormProps> = ({
                 type="button"
                 className="dropdown-list__button dropdown-list__button--delete js-todo-delete"
                 onClick={() => {
-                  dropdownRef.current?.classList.remove('is-active');
                   todoFormRef.current?.classList.add('fade-out');
                   setTimeout(() => {
                     id && onDeleteTodo && onDeleteTodo(id);
@@ -245,7 +218,7 @@ const TodoForm: FC<TodoFormProps> = ({
   } else {
     return (
       <form
-        className="form js-form-main"
+        className="form grid__area-todo-form js-form-main"
         onSubmit={onSubmit}
         onBlur={() => toggleComponentHasError(titleComponentRef)}
         ref={todoFormRef}
