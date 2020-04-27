@@ -226,7 +226,10 @@ const TodoForm: FC<TodoFormProps> = ({
                 className="dropdown-list__button dropdown-list__button--delete js-todo-delete"
                 onClick={() => {
                   dropdownRef.current?.classList.remove('is-active');
-                  id && onDeleteTodo && onDeleteTodo(id);
+                  todoFormRef.current?.classList.add('fade-out');
+                  setTimeout(() => {
+                    id && onDeleteTodo && onDeleteTodo(id);
+                  }, 500);
                 }}
               >
                 <span className="dropdown-list__button-text">Delete</span>

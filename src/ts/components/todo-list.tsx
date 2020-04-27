@@ -19,7 +19,7 @@ const TodoList = ({
   isPlaying,
 }: TodoListProps) => {
   return (
-    <ul className="todo__list">
+    <ul className="todo__list grid__area--todo-list">
       {todos
         .sort((a: Todo, b: Todo) => {
           const currentDate = moment(a.createdAt);

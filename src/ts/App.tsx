@@ -211,7 +211,6 @@ const App = ({
   const playActionChain = (actions: TodoActionType[]) => {
     const todo = document.querySelector('.js-todo') as HTMLDivElement;
     const nextAction = actions.shift();
-    console.log('nextAction: ', nextAction);
     todo.classList.add('has-overlay');
     if (nextAction) {
       return playAction(nextAction).then(
