@@ -5,20 +5,6 @@
 *:after {
     box-sizing: border-box;
 }
-
-body {
-    font-family: "Roboto", sans-serif;
-    font-size: 16px;
-    color: $black;
-    line-height: 1.25;
-}
-
-.wrapper {
-    margin: 0 auto;
-    width: 90%;
-    max-width: $phone-v;
-}
-
 .sr-only {
     position: absolute;
     width: 1px;
@@ -28,4 +14,15 @@ body {
     overflow: hidden;
     clip: rect(0, 0, 0, 0);
     border: 0;
+}
+body {
+    font-family: "Roboto", sans-serif;
+    font-size: 16px;
+    color: $black;
+    line-height: 1.25;
+}
+.wrapper {
+    margin: 0 auto;
+    width: 90%;
+    max-width: $phone-v;
 }

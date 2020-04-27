@@ -1,41 +1,75 @@
-import React, { FC, Fragment } from 'react'
-import { Recording, SetIsRecording, PlayRecording, DeleteRecording, DeleteAllRecordings } from '../store/types'
+import React, { Fragment } from 'react';
+import { Recording, PlayRecording, DeleteRecording } from '../store/types';
 import moment from 'moment';
 
 interface RecordingsListProps {
-    recordings: Recording[],
-    isPlaying: boolean,
-    isRecording: boolean,
-    onPlay: PlayRecording,
-    onExit: PlayRecording,
-    onDelete: DeleteRecording,
-    onDeleteAll: DeleteAllRecordings,
-    onStartRecording: SetIsRecording,
-    onStopRecording: SetIsRecording
+  recordings?: Recording[];
+  onPlay?: PlayRecording;
+  onDelete?: DeleteRecording;
 }
 
-const RecordingsList: FC<RecordingsListProps> = ({ recordings, isRecording, isPlaying, onPlay, onExit, onDelete, onDeleteAll, onStopRecording, onStartRecording }) => {
-    return <Fragment>
-        <ul>
-            {recordings.map(rec => {
-                return (
-                    <li key={rec.id!}>
-                        {moment(rec.created_at!).format('DD MMM YYYY HH:mm:ss')}
-                        {isPlaying
-                            ? <button onClick={() => onExit(rec)}>Exit</button>
-                            : <button onClick={() => onPlay(rec)}>Play</button>
-                        }
-                        <button onClick={() => onDelete(rec.id!)}>Delete</button>
-                    </li>
-                );
-            })}
-            <button onClick={() => onDeleteAll()}>Delete ALL</button>
-        </ul>
-        <button type="button" className="button button--outline" onClick={() => isRecording ? onStopRecording() : onStartRecording()}>
-            <span className="button__text">{isRecording ? 'Stop' : 'Start'} recording</span>
-        </button>
-    </Fragment>;
+const RecordingsList = ({
+  recordings,
+  onPlay,
+  onDelete,
+}: RecordingsListProps) => {
+  return (
+    <Fragment>
+      {recordings &&
+        recordings
+          .sort((a: Recording, b: Recording) => {
+            const currentDate = moment(a.createdAt);
+            const nextDate = moment(b.createdAt);
 
-}
+            return currentDate.isAfter(nextDate)
+              ? -1
+              : currentDate.isBefore(nextDate)
+              ? 1
+              : 0;
+          })
+          .map((rec) => {
+            return (
+              <li
+                key={rec.id}
+                value={rec.id}
+                className="todo-recording__list-item fade-in-right"
+              >
+                <div className="todo-recording__component">
+                  <div className="button-holder button-holder--no-padding">
+                    <button
+                      type="button"
+                      className="button"
+                      onClick={() => onPlay && onPlay(rec)}
+                    >
+                      <i className="button__icon button__icon--play"></i>
+                    </button>
+                  </div>
+                  <span className="todo-recording__title">
+                    {moment(rec.createdAt).format('DD MMM YYYY HH:mm:ss')}
+                  </span>
+                  <div className="button-holder button-holder--no-padding">
+                    <button
+                      type="button"
+                      className="button"
+                      onClick={() => {
+                        const todoItem = document.querySelector(
+                          `li[value='${rec.id}']`
+                        ) as HTMLLIElement;
+                        todoItem.classList.add('fade-out-left');
+                        setTimeout(() => {
+                          onDelete && onDelete(rec.id);
+                        }, 500);
+                      }}
+                    >
+                      <i className="button__icon button__icon--delete"></i>
+                    </button>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+    </Fragment>
+  );
+};
 
-export default RecordingsList
+export default RecordingsList;

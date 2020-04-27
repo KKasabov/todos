@@ -1,49 +1,160 @@
 .button {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border: 0;
     font-size: 16px;
     line-height: 1.1;
-    padding: 9px 25px;
+    padding: 5px;
     transition: 0.3s ease;
     border: 1px solid transparent;
     cursor: pointer;
     border-radius: 4px;
-
+    background-color: transparent;
+    &:hover {
+        background-color: $white;
+    }
     &--main {
+        padding: 9px 25px;
         background-color: $primary;
         color: $white;
         border-color: $primary;
-
         &:hover {
             border-color: darken($primary, 10);
             background-color: darken($primary, 10);
         }
     }
-
     &--outline {
+        padding: 9px 25px;
         background-color: rgba($black, 0.1);
         border-color: rgba($black, 0.1);
-
         &:hover {
             background-color: rgba($black, 0.15);
         }
     }
-
+    &--accent {
+        padding: 9px 25px;
+        background-color: $white;
+        color: $danger;
+        border-color: $danger;
+        &:hover {
+            color: $white;
+            background-color: $danger;
+        }
+    }
+    &--light {
+        padding: 9px 25px;
+        background-color: $white;
+        color: $black;
+        border-color: rgba($black, 0.1);
+        &:hover,
+        &.is-active {
+            color: $black;
+            border-color: $black;
+            background-color: $white;
+        }
+    }
     &-holder {
         display: flex;
         align-items: center;
         padding-top: 15px;
-
+        &--no-padding {
+            padding: 0;
+        }
         &--right {
             justify-content: flex-end;
         }
     }
-
     &-holder & {
         margin-right: 10px;
-
         &:last-child {
             margin-right: 0;
         }
+    }
+    &__icon {
+        background-repeat: no-repeat;
+        background-size: contain;
+        width: 18px;
+        height: 18px;
+        margin-right: 15px;
+        &:last-child {
+            margin-right: 0;
+        }
+        &--play {
+            background-image: url(../images/play.svg);
+        }
+        &--delete {
+            background-image: url(../images/trash.svg);
+        }
+        &--video-on {
+            background-image: url(../images/video.svg);
+        }
+        &--video-off {
+            background-image: url(../images/video-off.svg);
+        }
+    }
+    &-video {
+        &__icons {
+            width: 18px;
+            height: 18px;
+            position: relative;
+            margin-right: 15px;
+        }
+        & .button {
+            &__icon {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                transition: transform 0.3s ease;
+                &--video {
+                    &-off {
+                        transform: scale(0);
+                    }
+                }
+            }
+        }
+        &.is-active {
+            position: relative;
+            &:after {
+                content: "";
+                position: absolute;
+                top: 3px;
+                right: 3px;
+                width: 5px;
+                height: 5px;
+                background-color: $danger;
+                border-radius: 50%;
+                animation: blink 1s infinite;
+            }
+            & .button {
+                &__icon {
+                    &--video {
+                        &-on {
+                            transform: scale(0);
+                        }
+                        &-off {
+                            transform: scale(1);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@keyframes blink {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
     }
 }
