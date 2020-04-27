@@ -53,7 +53,6 @@ const TodoForm: FC<TodoFormProps> = ({
       if (id) {
         if (nameInputValue !== name || descriptionInputValue !== description) {
           onEditTodo && onEditTodo(id, nameInputValue, descriptionInputValue);
-          todoFormRef.current?.setAttribute('style', 'height:auto;');
         }
         todoFormRef.current?.classList.remove('is-toggled');
         e?.target.reset();
