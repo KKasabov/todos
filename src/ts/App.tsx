@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { hot } from 'react-hot-loader/root';
 import TodoList from './components/todo-list';
 import TodoForm from './components/todo-form';
@@ -243,6 +243,12 @@ const App = ({
 
   const recListRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    if (isPlaying) {
+      exitRecording();
+    }
+  }, []);
+
   return (
     <div className="todo js-todo">
       <div className="wrapper">
@@ -273,6 +279,7 @@ const App = ({
                     recordings={recordings}
                     onPlay={playRec}
                     onDelete={deleteRecording}
+                    isPlaying={isPlaying}
                   />
                 </ul>
               </div>
