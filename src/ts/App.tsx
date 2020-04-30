@@ -280,6 +280,7 @@ const App = ({
                     onPlay={playRec}
                     onDelete={deleteRecording}
                     isPlaying={isPlaying}
+                    isRecording={isRecording}
                   />
                 </ul>
               </div>
@@ -293,6 +294,7 @@ const App = ({
                       deleteAllRecordings();
                     }, 500);
                   }}
+                  disabled={isPlaying || isRecording}
                 >
                   <span className="button__text">Delete all recordings</span>
                 </button>
