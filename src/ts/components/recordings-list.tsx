@@ -6,12 +6,14 @@ interface RecordingsListProps {
   recordings?: Recording[];
   onPlay?: PlayRecording;
   onDelete?: DeleteRecording;
+  isPlaying?: boolean;
 }
 
 const RecordingsList = ({
   recordings,
   onPlay,
   onDelete,
+  isPlaying,
 }: RecordingsListProps) => {
   return (
     <Fragment>
@@ -39,7 +41,7 @@ const RecordingsList = ({
                     <button
                       type="button"
                       className="button"
-                      onClick={() => onPlay && onPlay(rec)}
+                      onClick={() => (isPlaying ? null : onPlay && onPlay(rec))}
                     >
                       <i className="button__icon button__icon--play"></i>
                     </button>
@@ -52,13 +54,15 @@ const RecordingsList = ({
                       type="button"
                       className="button"
                       onClick={() => {
-                        const todoItem = document.querySelector(
-                          `li[value='${rec.id}']`
-                        ) as HTMLLIElement;
-                        todoItem.classList.add('fade-out-left');
-                        setTimeout(() => {
-                          onDelete && onDelete(rec.id);
-                        }, 500);
+                        if (!isPlaying) {
+                          const todoItem = document.querySelector(
+                            `li[value='${rec.id}']`
+                          ) as HTMLLIElement;
+                          todoItem.classList.add('fade-out-left');
+                          setTimeout(() => {
+                            onDelete && onDelete(rec.id);
+                          }, 500);
+                        }
                       }}
                     >
                       <i className="button__icon button__icon--delete"></i>
